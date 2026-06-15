@@ -8,87 +8,16 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
-  <style>
-    .legal {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 80px 28px 40px;
-    }
-    .legal h1 {
-      font-family: 'DM Serif Display', serif;
-      font-weight: 400;
-      font-size: clamp(34px, 5vw, 48px);
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 14px;
-    }
-    .legal .updated {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin-bottom: 40px;
-    }
-    .legal h2 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-      margin: 40px 0 12px;
-    }
-    .legal h3 {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin: 28px 0 10px;
-    }
-    .legal p, .legal li {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--text2);
-      margin-bottom: 14px;
-    }
-    .legal strong { color: var(--text); }
-    .legal ul { padding-left: 22px; margin-bottom: 14px; }
-    .legal li { margin-bottom: 8px; }
-    .legal hr {
-      border: none;
-      border-top: 0.5px solid var(--border);
-      margin: 40px 0;
-    }
-    .legal .tldr {
-      background: var(--bg2);
-      border: 0.5px solid var(--border2);
-      border-radius: 8px;
-      padding: 22px 24px;
-      margin-bottom: 36px;
-    }
-    .legal .tldr-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin-bottom: 10px;
-    }
-    .legal .tldr p { margin-bottom: 0; color: var(--text); }
-    .legal a { color: var(--text); border-bottom: 0.5px solid var(--border2); }
-    .legal a:hover { border-bottom-color: var(--text); }
-  </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="inner">
     <a class="brand" href="/">
-      <img class="brand-logo" src="/logo.svg" alt="" />
-      <span class="brand-name">maildigest</span>
       <span class="brand-dot" aria-hidden="true"></span>
+      <span class="brand-name">Mail Digest</span>
     </a>
     <nav class="topbar-nav">
       <a href="/#features">Features</a>
@@ -101,7 +30,7 @@
 
 <main class="legal">
   <h1>Terms &amp; Conditions</h1>
-  <div class="updated">Last updated · May 21, 2026</div>
+  <div class="updated">Last updated · June 15, 2026</div>
 
   <div class="tldr">
     <div class="tldr-label">TL;DR</div>
@@ -127,7 +56,7 @@
   <ul>
     <li>Access, intercept, or process emails from accounts you do not own or are not authorised to read;</li>
     <li>Violate the Gmail API's <a href="https://developers.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> or any Google product policy;</li>
-    <li>Violate the terms of any AI provider you configure (Anthropic, OpenAI, Google AI Studio, Ollama, or others);</li>
+    <li>Violate the terms of any AI provider you configure (Anthropic, OpenAI, or Google AI Studio);</li>
     <li>Process emails that contain personal data subject to obligations you cannot meet (for example, regulated health, financial, or legal data covered by HIPAA, GLBA, attorney-client privilege, or similar);</li>
     <li>Infringe the rights of any third party, including intellectual-property, privacy, and confidentiality obligations.</li>
   </ul>
@@ -141,7 +70,6 @@
     <li><strong>Anthropic</strong> &mdash; <a href="https://www.anthropic.com/legal/consumer-terms" target="_blank" rel="noopener">Anthropic terms</a> if you enable the Claude provider.</li>
     <li><strong>OpenAI</strong> &mdash; <a href="https://openai.com/policies/terms-of-use" target="_blank" rel="noopener">OpenAI terms</a> if you enable the GPT provider.</li>
     <li><strong>Google AI Studio</strong> &mdash; <a href="https://ai.google.dev/terms" target="_blank" rel="noopener">Google AI Studio terms</a> if you enable the Gemini provider.</li>
-    <li><strong>Hugging Face</strong> &mdash; if you use the default local model, weights are downloaded once from Hugging Face.</li>
   </ul>
   <p>
     The maintainers of Mail Digest are not a party to those agreements and are not responsible for the behaviour, availability, pricing, or data practices of those services. If a third party suspends or terminates your account, the Software may stop working for that provider; you remain responsible for your own contracts with them.
@@ -149,7 +77,7 @@
 
   <h2>5. API costs</h2>
   <p>
-    If you choose a provider that charges per-request (Anthropic, OpenAI, certain Google models), you are responsible for the resulting fees. The Software does not bill you and the maintainers receive no share of those fees. Estimate provided in the documentation is informational only.
+    If you choose a provider that charges per-request (Anthropic, OpenAI, or Google AI Studio), you are responsible for the resulting fees. The Software does not bill you and the maintainers receive no share of those fees. Estimates provided in the documentation are informational only.
   </p>
 
   <h2>6. No warranty</h2>
@@ -174,7 +102,7 @@
 
   <h2>10. Trademarks</h2>
   <p>
-    "Mail Digest" is the project name. Third-party names mentioned on this site (Gmail, Google, Anthropic, Claude, OpenAI, GPT, Gemini, Superhuman, Shortwave, Ollama, Hugging Face, and others) are trademarks of their respective owners and are referenced only for comparison and interoperability purposes. No endorsement is implied.
+    "Mail Digest" is the project name. Third-party names mentioned on this site (Gmail, Google, Anthropic, Claude, OpenAI, GPT, Gemini, Superhuman, Shortwave, and others) are trademarks of their respective owners and are referenced only for comparison and interoperability purposes. No endorsement is implied.
   </p>
 
   <h2>11. Changes to the Terms</h2>
@@ -194,7 +122,7 @@
 
   <hr />
 
-  <p style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); letter-spacing: 0.04em;">
+  <p class="disclaimer">
     This document is provided for transparency and is not legal advice. If you require legally binding terms for an organisation, please have it reviewed by qualified counsel in your jurisdiction.
   </p>
 </main>

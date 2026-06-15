@@ -3,22 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mail Digest — A morning brief of your inbox. Local AI. No subscription.</title>
-  <meta name="description" content="Open-source desktop app that reads your last 24h of email, classifies priority, suggests tasks, calendar events, and reply drafts. Runs locally on your machine by default." />
-  <meta name="theme-color" content="#f7f5f2" />
+  <title>Mail Digest — A morning brief of your inbox. Premium AI. Your keys.</title>
+  <meta name="description" content="Open-source desktop app that reads your last 24h of email, classifies priority, suggests tasks, calendar events, and reply drafts. Powered by Claude, GPT, or Gemini with your own API key." />
+  <meta name="theme-color" content="#faf6ee" />
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/styles.css" />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Mail Digest" />
-  <meta property="og:description" content="A morning brief of your inbox. Local AI. No subscription." />
+  <meta property="og:description" content="A morning brief of your inbox. Premium AI. Your keys." />
   <meta property="og:url" content="https://maildigest.app" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://maildigest.app/logo.svg" />
@@ -26,13 +24,11 @@
 </head>
 <body>
 
-<!-- ================= TOPBAR ================= -->
 <header class="topbar">
   <div class="inner">
     <a class="brand" href="/">
-      <img class="brand-logo" src="/logo.svg" alt="" />
-      <span class="brand-name">maildigest</span>
       <span class="brand-dot" aria-hidden="true"></span>
+      <span class="brand-name">Mail Digest</span>
     </a>
     <nav class="topbar-nav">
       <a href="#features">Features</a>
@@ -43,99 +39,124 @@
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
-<section class="hero">
+<section class="hero-wrap">
   <div class="container">
-    <img class="hero-logo" src="/logo.svg" alt="Mail Digest logo" />
-    <div class="hero-eyebrow">Open source · Local-first · Cross-platform</div>
-    <h1>
-      A morning brief of your inbox.<br />
-      <em>Local AI. No subscription.</em>
-    </h1>
-    <p class="lead">
-      Mail Digest reads your last 24 hours of email and tells you what matters &mdash; priority, tasks, calendar events, and suggested replies. The default model runs entirely on your machine. Nothing sent to a third&#8209;party AI vendor.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="https://github.com" target="_blank" rel="noopener">Download for macOS, Windows, Linux</a>
-      <a class="btn" href="https://github.com" target="_blank" rel="noopener">View source on GitHub</a>
-    </div>
-    <div class="hero-meta">
-      <span><span class="ai-badge">default</span> Gemma 3 4B · WebGPU</span>
-      <span><span class="ai-badge">optional</span> Claude · GPT · Gemini · Ollama</span>
-      <span><span class="ai-badge">free</span> MIT licensed</span>
+    <div class="hero">
+      <div class="hero-stripe"></div>
+      <div class="hero-body">
+        <div class="hero-eyebrow">Open source · Premium models · Cross-platform</div>
+        <h1>
+          A morning brief of your inbox.<br />
+          <em>Premium AI. Your keys.</em>
+        </h1>
+        <p class="lead">
+          Mail Digest reads your last 24 hours of email and tells you what matters &mdash; priority, tasks, calendar events, and suggested replies. Connect Claude, GPT, or Gemini with your own API key. We never see your keys or your emails.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-brand" href="https://github.com" target="_blank" rel="noopener">Download for macOS, Windows, Linux</a>
+          <a class="btn" href="https://github.com" target="_blank" rel="noopener">View source on GitHub</a>
+        </div>
+        <div class="hero-meta">
+          <span class="hero-meta-item"><span class="badge ai">claude</span> Anthropic</span>
+          <span class="hero-meta-item"><span class="badge ai">gpt</span> OpenAI</span>
+          <span class="hero-meta-item"><span class="badge ai">gemini</span> Google</span>
+          <span class="hero-meta-item"><span class="badge fyi">app</span> MIT licensed</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ================= FEATURES ================= -->
-<section id="features">
+<section id="features" class="page-section">
   <div class="container">
-    <div class="section-label">Features</div>
-    <h2 class="section-title">A different shape of email AI.</h2>
+    <div class="section-head">
+      <div class="section-dot" style="background: var(--brand)"></div>
+      <h2>A different shape of email AI</h2>
+      <div class="section-meta">6 features</div>
+    </div>
     <p class="section-lead">
-      Most AI mail clients trade your privacy for convenience. Mail Digest keeps the inference on your machine by default, and lets you switch providers without changing your workflow.
+      Most AI mail clients lock you into one vendor and charge a monthly subscription. Mail Digest is open source: pick Claude, GPT, or Gemini, bring your own API key, and pay the provider directly.
     </p>
 
     <div class="features-grid">
-      <div class="feature">
-        <svg class="feature-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
-          <rect x="3" y="4" width="14" height="12" rx="2" />
-          <circle cx="10" cy="10" r="3" />
-        </svg>
-        <h3>Local by default</h3>
-        <p>Gemma 3 4B runs in the app via WebGPU. The model downloads once (~2-3 GB) and stays on your machine. No API key required.</p>
+      <div class="card brand">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <svg class="card-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="12" height="10" rx="1.5" />
+            <circle cx="8" cy="8" r="2.5" />
+          </svg>
+          <h3>Premium models</h3>
+          <p class="card-summary">Claude, GPT, and Gemini built in. Choose the model that fits your quality bar and budget &mdash; Sonnet, GPT&#8209;4.1, Gemini Flash, or whatever you configure.</p>
+        </div>
       </div>
 
-      <div class="feature">
-        <svg class="feature-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M4 10h12M10 4v12" />
-        </svg>
-        <h3>Bring your own model</h3>
-        <p>One-click switch to Anthropic Claude, OpenAI GPT, Google Gemini, or a local Ollama server. Use your own API key, set your own model.</p>
+      <div class="card sky">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <svg class="card-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M8 3v10" />
+          </svg>
+          <h3>Your keys, your provider</h3>
+          <p class="card-summary">API keys stay on your machine. Requests go from your desktop straight to Anthropic, OpenAI, or Google &mdash; no Mail Digest server in the middle.</p>
+        </div>
       </div>
 
-      <div class="feature">
-        <svg class="feature-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M10 3l7 4v5c0 4-3 6.5-7 8-4-1.5-7-4-7-8V7l7-4z" />
-        </svg>
-        <h3>Privacy by design</h3>
-        <p>Gmail OAuth tokens live in your OS keychain. Emails are fetched directly from Google to your machine &mdash; no intermediary servers, no analytics, no telemetry.</p>
+      <div class="card emerald">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <svg class="card-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M8 2l6 3.5v4c0 3.5-2.5 5.5-6 7-3.5-1.5-6-3.5-6-7v-4L8 2z" />
+          </svg>
+          <h3>Privacy by design</h3>
+          <p class="card-summary">Gmail OAuth tokens live in your OS keychain. Email goes from Google to your machine, then to the AI provider you chose. No Mail Digest backend, no analytics, no telemetry.</p>
+        </div>
       </div>
 
-      <div class="feature">
-        <svg class="feature-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
-          <rect x="3" y="5" width="14" height="12" rx="2" />
-          <path d="M3 9h14M7 3v4M13 3v4" />
-        </svg>
-        <h3>Daily brief, automatic</h3>
-        <p>Set the hour. Wake up to your inbox already triaged: priority, action items, calendar events, suggested replies &mdash; ready to skim with your first coffee.</p>
+      <div class="card sunset">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <svg class="card-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="12" height="10" rx="1.5" />
+            <path d="M2 7h12M6 2v3M10 2v3" />
+          </svg>
+          <h3>Daily brief, automatic</h3>
+          <p class="card-summary">Set the hour. Wake up to your inbox already triaged: priority, action items, calendar events, suggested replies &mdash; ready to skim with your first coffee.</p>
+        </div>
       </div>
 
-      <div class="feature">
-        <svg class="feature-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
-          <circle cx="10" cy="10" r="7" />
-          <path d="M10 6v4l3 2" />
-        </svg>
-        <h3>Editorial reading experience</h3>
-        <p>Designed to read like a morning paper, not a notification feed. Density without noise. Serif headings, calm palette, instant scanning.</p>
+      <div class="card grape">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <svg class="card-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="6" />
+            <path d="M8 5v3.5l2.5 1.5" />
+          </svg>
+          <h3>Editorial reading experience</h3>
+          <p class="card-summary">Designed to read like a morning paper, not a notification feed. Color-coded sections, calm palette, instant scanning.</p>
+        </div>
       </div>
 
-      <div class="feature">
-        <svg class="feature-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M4 6l3 3-3 3M10 6l3 3-3 3M16 12h-1" />
-        </svg>
-        <h3>Open and inspectable</h3>
-        <p>MIT licensed. Audit the prompts. Audit the network calls. Fork it. Build the integrations you actually need &mdash; not the ones a vendor decides to ship.</p>
+      <div class="card rose">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <svg class="card-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 5l2.5 2.5L3 10M8 5l2.5 2.5L8 10M13 9h-1" />
+          </svg>
+          <h3>Open and inspectable</h3>
+          <p class="card-summary">MIT licensed. Audit the prompts. Audit the network calls. Fork it. Build the integrations you actually need &mdash; not the ones a vendor decides to ship.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section id="how">
+<section id="how" class="page-section">
   <div class="container">
-    <div class="section-label">How it works</div>
-    <h2 class="section-title">Three steps. About five minutes the first time.</h2>
+    <div class="section-head">
+      <div class="section-dot" style="background: var(--grape)"></div>
+      <h2>Three steps. About five minutes the first time.</h2>
+    </div>
 
     <div class="steps">
       <div class="step">
@@ -145,108 +166,87 @@
       </div>
       <div class="step">
         <div class="step-num">02</div>
-        <h3>Pick a model</h3>
-        <p>Default is Gemma 3 4B running locally via WebGPU. Or paste an API key for Claude, GPT, or Gemini. You can change later, any time.</p>
+        <h3>Add your API key</h3>
+        <p>Choose Claude, GPT, or Gemini and paste your API key. Switch provider or model any time without changing your workflow.</p>
       </div>
       <div class="step">
         <div class="step-num">03</div>
         <h3>Hit refresh</h3>
-        <p>First run downloads the model. After that, the daily brief renders in seconds. Set a time and the app does it for you every morning.</p>
+        <p>The daily brief renders in seconds. Set a time and the app prepares it for you every morning.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= APP PREVIEW ================= -->
-<section>
+<section class="page-section">
   <div class="container">
-    <div class="section-label">A glance inside</div>
-    <h2 class="section-title">What a morning looks like.</h2>
+    <div class="section-head">
+      <div class="section-dot" style="background: var(--sky)"></div>
+      <h2>What a morning looks like</h2>
+      <div class="section-meta">briefing preview</div>
+    </div>
     <p class="section-lead">
-      Priority on the left. The current email on the right. Tasks, events, and a drafted reply ready to copy.
+      A single scrolling document: what needs you, what the AI proposes, and what it already handled. No sidebar, no inbox noise.
     </p>
 
-    <div class="preview" aria-hidden="true">
-      <aside class="preview-side">
-        <div class="preview-stats">
-          <div class="stat-pill"><span class="stat-dot" style="background:var(--urgent)"></span>2 urgent</div>
-          <div class="stat-pill"><span class="stat-dot" style="background:var(--today)"></span>4 today</div>
-          <div class="stat-pill"><span class="stat-dot" style="background:var(--week)"></span>3 this week</div>
-        </div>
-        <div class="preview-list">
-          <div class="email-item active">
-            <div class="email-row1">
-              <span class="email-from">Sara Lopes</span>
-              <span class="email-time">08:14</span>
+    <div class="briefing-preview" aria-hidden="true">
+      <div class="bp-hero">
+        <div class="hero-stripe"></div>
+        <div class="bp-hero-body">
+          <div class="hero-eyebrow">Monday · sample</div>
+          <h3>Good <em>morning</em>.</h3>
+          <div class="stats">
+            <div class="stat urgent">
+              <span class="num">0</span>
+              <span class="lbl"><strong>Urgent</strong>clear</span>
             </div>
-            <div class="email-subject">Q3 board memo — needs your review</div>
-          </div>
-          <div class="email-item">
-            <div class="email-row1">
-              <span class="email-from">Stripe</span>
-              <span class="email-time">07:42</span>
+            <div class="stat today">
+              <span class="num">2</span>
+              <span class="lbl"><strong>Today</strong>need you</span>
             </div>
-            <div class="email-subject">Payment received from Acme Co.</div>
-          </div>
-          <div class="email-item">
-            <div class="email-row1">
-              <span class="email-from">Miguel Costa</span>
-              <span class="email-time">07:30</span>
+            <div class="stat week">
+              <span class="num">4</span>
+              <span class="lbl"><strong>This week</strong>can wait</span>
             </div>
-            <div class="email-subject">Re: launch plan, two open questions</div>
-          </div>
-          <div class="email-item">
-            <div class="email-row1">
-              <span class="email-from">GitHub</span>
-              <span class="email-time">06:55</span>
+            <div class="stat fyi">
+              <span class="num">17</span>
+              <span class="lbl"><strong>Handled</strong>archived</span>
             </div>
-            <div class="email-subject">3 new pull requests in your repo</div>
-          </div>
-          <div class="email-item">
-            <div class="email-row1">
-              <span class="email-from">Joana Pinto</span>
-              <span class="email-time">06:12</span>
-            </div>
-            <div class="email-subject">Coffee Thursday? 10:00 at Hello, Kristof</div>
           </div>
         </div>
-      </aside>
+      </div>
 
-      <div class="preview-main">
-        <div class="preview-head">
-          <div class="preview-meta">From Sara Lopes · 08:14</div>
-          <span class="badge p-urgent">urgent</span>
+      <div class="bp-section">
+        <div class="section-head">
+          <div class="section-dot" style="background: var(--urgent)"></div>
+          <h2>What needs you</h2>
+          <div class="section-meta">2 items</div>
         </div>
-        <h3 class="preview-subject">Q3 board memo — needs your review <span class="ai-badge">via local · gemma 3 4b</span></h3>
-
-        <div class="section-label" style="margin-top:14px">Summary</div>
-        <p class="preview-summary">
-          Sara is sending the Q3 board memo draft for your sign-off before Friday's meeting. She flagged two items needing your input: the revised growth target and the headcount reallocation. Quick review, then she'll lock and ship.
-        </p>
-
-        <div class="divider"></div>
-
-        <div class="section-label">Tasks</div>
-        <div class="task-item"><span class="task-check"></span>Review Q3 memo draft before Friday</div>
-        <div class="task-item"><span class="task-check"></span>Decide on revised growth target</div>
-        <div class="task-item"><span class="task-check"></span>Confirm headcount reallocation</div>
-
-        <div class="divider"></div>
-
-        <div class="section-label">Suggested reply</div>
-        <div class="draft-box">Sara — taking a look this evening. I'll come back to you tomorrow morning with the growth target and headcount decisions so you can lock the doc before Friday. Thanks for the heads-up.</div>
+        <div class="card today">
+          <div class="card-stripe"></div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="badge today">Today</span>
+              <span class="sender">Sara Lopes</span>
+              <span class="time">08:14</span>
+            </div>
+            <h3>Q3 board memo — needs your review</h3>
+            <p class="card-summary">Sara flagged two items for your input before Friday: the revised growth target and the headcount reallocation. Quick review, then she locks and ships.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= COMPARISON ================= -->
-<section id="compare">
+<section id="compare" class="page-section">
   <div class="container">
-    <div class="section-label">Compare</div>
-    <h2 class="section-title">How Mail Digest is different.</h2>
+    <div class="section-head">
+      <div class="section-dot" style="background: var(--slate)"></div>
+      <h2>How Mail Digest is different</h2>
+    </div>
     <p class="section-lead">
-      The market has settled on cloud-only AI mail clients with monthly subscriptions. Mail Digest takes the opposite bet: local-first, open source, pay nothing.
+      The market has settled on proprietary AI mail clients with monthly subscriptions and vendor lock-in. Mail Digest is open source: free app, your API keys, your provider.
     </p>
 
     <div class="compare-wrap">
@@ -262,18 +262,18 @@
         </thead>
         <tbody>
           <tr>
-            <td>Runs locally by default</td>
-            <td class="us"><span class="yes">Yes</span></td>
-            <td><span class="no">No</span></td>
-            <td><span class="no">No</span></td>
-            <td><span class="no">No</span></td>
-          </tr>
-          <tr>
-            <td>Free to use</td>
+            <td>No app subscription</td>
             <td class="us"><span class="yes">Yes</span></td>
             <td><span class="no">$30/mo</span></td>
             <td><span class="mid">Limited</span></td>
             <td><span class="yes">Yes</span></td>
+          </tr>
+          <tr>
+            <td>Bring your own API key</td>
+            <td class="us"><span class="yes">Yes</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
           </tr>
           <tr>
             <td>Open source</td>
@@ -284,7 +284,7 @@
           </tr>
           <tr>
             <td>Switch between AI providers</td>
-            <td class="us"><span class="yes">5 options</span></td>
+            <td class="us"><span class="yes">3 providers</span></td>
             <td><span class="no">No</span></td>
             <td><span class="no">No</span></td>
             <td><span class="no">No</span></td>
@@ -309,24 +309,21 @@
   </div>
 </section>
 
-<!-- ================= CALL TO ACTION ================= -->
-<section>
-  <div class="container" style="text-align:center; max-width:680px;">
-    <div class="section-label" style="margin-bottom:24px;">Get started</div>
-    <h2 class="section-title" style="margin-left:auto; margin-right:auto;">
-      Your inbox &mdash; on your terms.
-    </h2>
-    <p class="section-lead" style="margin-left:auto; margin-right:auto;">
-      Download Mail Digest, point it at your Gmail, and read tomorrow morning's brief before anyone else opens their laptop.
-    </p>
-    <div class="hero-actions" style="margin-top: 32px;">
-      <a class="btn btn-primary" href="https://github.com" target="_blank" rel="noopener">Download &amp; install guide</a>
-      <a class="btn" href="https://github.com" target="_blank" rel="noopener">Read the source</a>
+<section class="page-section">
+  <div class="container">
+    <div class="convo-hint">
+      <h2>Your inbox &mdash; on your terms.</h2>
+      <p>
+        Download Mail Digest, point it at your Gmail, and read tomorrow morning's brief before anyone else opens their laptop.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-brand" href="https://github.com" target="_blank" rel="noopener">Download &amp; install guide</a>
+        <a class="btn" href="https://github.com" target="_blank" rel="noopener">Read the source</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ================= FOOTER ================= -->
 <footer>
   <div class="footer-inner">
     <div>&copy; 2026 Mail Digest &middot; MIT licensed</div>

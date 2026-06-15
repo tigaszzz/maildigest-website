@@ -8,7 +8,7 @@ Static marketing site for Mail Digest. Hostable on Cloudflare Pages, Netlify, Gi
 index.html       Home page
 privacy.html     Privacy policy
 terms.html       Terms & conditions
-styles.css       Shared styles (editorial light theme, design system from DESIGN.md)
+styles.css       Shared styles (DESIGN_NEW.md v0.5 — colorful briefing system)
 logo.svg         Brand mark (used in <img>)
 favicon.svg      Browser tab icon
 _headers         Security headers (Cloudflare Pages format)
@@ -44,14 +44,14 @@ Then open http://localhost:8080.
 
 ## Design system
 
-This site follows the design system documented in the parent project's `DESIGN.md`:
+This site follows `DESIGN_NEW.md` (v0.5 — colorful briefing system):
 
-- Typography: DM Serif Display (headlines), Syne (UI/body), DM Mono (metadata/badges)
-- Colours: warm off-white background `#f7f5f2`, primary text `#1a1917`, priority palette inherited from the desktop app
-- Borders: always 0.5px, no shadows, no gradients
+- Typography: Fraunces (display), Inter Tight (UI/body), JetBrains Mono (metadata/badges)
+- Colours: warm cream `#faf6ee`, iris brand `#6c5cf0`, functional category palette
+- Borders: 1px, flat cards (no shadows except brand-dot ring)
 - Behaviour: instant transitions (max 0.12s), hidden scrollbars
 
-Do not edit fonts, colours, or borders without updating the parent project's `DESIGN.md` to keep desktop app + site visually aligned.
+Keep desktop app + site visually aligned by updating `DESIGN_NEW.md` when changing tokens or fonts.
 
 ## Copy and content
 

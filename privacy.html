@@ -4,91 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — Mail Digest</title>
-  <meta name="description" content="How Mail Digest handles your data. Short version: it stays on your machine." />
+  <meta name="description" content="How Mail Digest handles your data. Short version: keys and settings stay on your machine; AI runs through the provider you choose." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
-  <style>
-    .legal {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 80px 28px 40px;
-    }
-    .legal h1 {
-      font-family: 'DM Serif Display', serif;
-      font-weight: 400;
-      font-size: clamp(34px, 5vw, 48px);
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 14px;
-    }
-    .legal .updated {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin-bottom: 40px;
-    }
-    .legal h2 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-      margin: 40px 0 12px;
-    }
-    .legal h3 {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin: 28px 0 10px;
-    }
-    .legal p, .legal li {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--text2);
-      margin-bottom: 14px;
-    }
-    .legal strong { color: var(--text); }
-    .legal ul { padding-left: 22px; margin-bottom: 14px; }
-    .legal li { margin-bottom: 8px; }
-    .legal hr {
-      border: none;
-      border-top: 0.5px solid var(--border);
-      margin: 40px 0;
-    }
-    .legal .tldr {
-      background: var(--bg2);
-      border: 0.5px solid var(--border2);
-      border-radius: 8px;
-      padding: 22px 24px;
-      margin-bottom: 36px;
-    }
-    .legal .tldr-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin-bottom: 10px;
-    }
-    .legal .tldr p { margin-bottom: 0; color: var(--text); }
-    .legal a { color: var(--text); border-bottom: 0.5px solid var(--border2); }
-    .legal a:hover { border-bottom-color: var(--text); }
-  </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="inner">
     <a class="brand" href="/">
-      <img class="brand-logo" src="/logo.svg" alt="" />
-      <span class="brand-name">maildigest</span>
       <span class="brand-dot" aria-hidden="true"></span>
+      <span class="brand-name">Mail Digest</span>
     </a>
     <nav class="topbar-nav">
       <a href="/#features">Features</a>
@@ -101,12 +30,12 @@
 
 <main class="legal">
   <h1>Privacy Policy</h1>
-  <div class="updated">Last updated · May 21, 2026</div>
+  <div class="updated">Last updated · June 15, 2026</div>
 
   <div class="tldr">
     <div class="tldr-label">TL;DR</div>
     <p>
-      Mail Digest is a desktop application that runs on your computer. We do not operate a server that stores your emails, your AI prompts, your API keys, or any analytics about you. The application talks directly to the providers you configure (Google for Gmail, optionally Anthropic, OpenAI, Google AI Studio, or your local Ollama server). The default AI model runs locally on your machine via WebGPU and does not contact any third party after the initial model download.
+      Mail Digest is a desktop application that runs on your computer. We do not operate a server that stores your emails, your AI prompts, your API keys, or any analytics about you. When you run a digest, the app fetches email from Google and sends the text to the premium AI provider you configure (Anthropic, OpenAI, or Google AI Studio) using your API key. Requests go directly from your machine to those services.
     </p>
   </div>
 
@@ -131,8 +60,7 @@
   <ul>
     <li><strong>Gmail OAuth tokens</strong> are stored in your operating system's secure keychain (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux). They never leave your machine.</li>
     <li><strong>Your settings and the most recent digest</strong> are stored in a local file managed by <code>electron-store</code>, inside the application's user-data directory on your machine.</li>
-    <li><strong>The local AI model weights</strong> (~2-3 GB) are cached in your browser's IndexedDB, downloaded once from Hugging Face on first use.</li>
-    <li><strong>Your Google OAuth Client ID and Client Secret</strong>, and any third-party API keys you choose to enter (Anthropic, OpenAI, Google AI Studio), are stored locally alongside settings. They are not encrypted at rest at this time &mdash; encryption is on the roadmap. Treat the application as you would any local password manager and protect your user account accordingly.</li>
+    <li><strong>Your Google OAuth Client ID and Client Secret</strong>, and your API keys for Anthropic, OpenAI, or Google AI Studio, are stored locally alongside settings. They are not encrypted at rest at this time &mdash; encryption is on the roadmap. Treat the application as you would any local password manager and protect your user account accordingly.</li>
   </ul>
 
   <h2>4. What is sent to third parties</h2>
@@ -141,11 +69,9 @@
     <li><strong>Google</strong>: the application calls the Gmail API using your OAuth credentials to read your messages. This is unavoidable &mdash; that is how Gmail works.</li>
   </ul>
 
-  <h3>Only when configured by you</h3>
+  <h3>When you run a digest</h3>
   <ul>
-    <li><strong>Anthropic</strong>, <strong>OpenAI</strong>, or <strong>Google AI Studio</strong>: if you choose one of these providers, the text of the emails Mail Digest just read is sent to that provider's API for analysis. Each provider has its own privacy policy and data-retention rules. We recommend reviewing them before enabling the corresponding provider.</li>
-    <li><strong>A local Ollama server</strong>, if you choose to use it: the emails are sent to <code>http://127.0.0.1</code> on your machine.</li>
-    <li><strong>Hugging Face</strong>: the first time you use the default local model, the application downloads the model weights from <code>huggingface.co</code>. After that, no further calls to Hugging Face are made.</li>
+    <li><strong>Anthropic</strong>, <strong>OpenAI</strong>, or <strong>Google AI Studio</strong>: the text of the emails Mail Digest just read is sent to that provider's API for analysis, using the API key you entered. Each provider has its own privacy policy and data-retention rules. We recommend reviewing them before enabling the corresponding provider.</li>
   </ul>
 
   <h3>Never sent anywhere by us</h3>
@@ -185,7 +111,7 @@
 
   <hr />
 
-  <p style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); letter-spacing: 0.04em;">
+  <p class="disclaimer">
     This document is provided for transparency and is not legal advice. If you require legally binding terms for an organisation, please have it reviewed by qualified counsel in your jurisdiction.
   </p>
 </main>
