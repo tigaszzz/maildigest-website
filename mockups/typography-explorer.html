@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — Typography Explorer</title>
+
+<!-- Load all candidate font families -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+
+<!-- Google Fonts: Fraunces, Inter Tight, JetBrains Mono, Instrument Serif, DM Serif Display, DM Mono, Newsreader, Syne -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Newsreader:opsz,ital,wght@6..72,0,300..700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Fontshare: General Sans + Geist Sans (proxy via Geist on Vercel CDN) -->
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Variable.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2');
+  }
+</style>
+
+<style>
+  /* ============================================================
+     Refined Palette A — final recommendation
+     ============================================================ */
+  :root {
+    --bg:      #f4efe4;        /* slightly more cream than f1ede4 */
+    --bg2:     #fbf8f1;
+    --bg3:     #e9e2d2;
+    --border:  rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --border3: rgba(0,0,0,0.30);
+    --text:    #14110d;
+    --text2:   #4a4540;
+    --text3:   #7a7068;
+    --accent:    #b06d2a;       /* burnt amber */
+    --accent-on: #fffaf0;
+    --urgent: #a52a1a;
+    --today:  #b06d2a;
+    --week:   #4d6b3e;
+    --fyi:    #6e6a64;
+    --urgent-bg: rgba(165,42,26,0.10);
+    --today-bg:  rgba(176,109,42,0.14);
+    --week-bg:   rgba(77,107,62,0.12);
+    --fyi-bg:    rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 450;
+    line-height: 1.5;
+  }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* ============================================================
+     Top chrome
+     ============================================================ */
+  .chrome {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+  }
+  .chrome-top {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+  .chrome h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .chrome p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  /* ============================================================
+     Grid of pairings
+     ============================================================ */
+  .wrap {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .card.recommended {
+    border: 1px solid rgba(176,109,42,0.5);
+    box-shadow: 0 0 0 4px rgba(176,109,42,0.06);
+  }
+
+  .card-head {
+    padding: 22px 26px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .pair-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    margin: 0 0 4px;
+  }
+  .pair-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .pair-tag .star {
+    background: var(--accent);
+    color: var(--accent-on);
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .pair-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .pair-stack {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .pair-stack b { color: var(--text2); font-weight: 500; }
+
+  /* Sample area */
+  .sample {
+    padding: 32px 32px 28px;
+  }
+  .sample .date {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 14px;
+  }
+  .sample h2 { /* hero */
+    margin: 0 0 14px;
+    line-height: 1.08;
+    letter-spacing: -0.022em;
+  }
+  .sample .lede {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin: 0 0 24px;
+    max-width: 55ch;
+  }
+  .sample .lede strong { color: var(--text); font-weight: 600; }
+
+  .sample .section-label {
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    font-weight: 500;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+
+  .sample .mini-card {
+    padding: 16px 18px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    border-left: 3px solid var(--today);
+  }
+  .sample .mini-meta {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 6px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .sample .mini-meta .sender { color: var(--text); font-weight: 500; }
+  .sample .mini-subject {
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    margin: 0 0 10px;
+  }
+  .sample .mini-summary {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin: 0;
+  }
+  .sample .mini-summary strong { color: var(--text); font-weight: 600; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 3px;
+    line-height: 1;
+  }
+  .badge.today { color: var(--today); background: var(--today-bg); }
+
+  /* ============================================================
+     PAIR 1 — Fraunces + Inter Tight + JetBrains Mono (PRIMARY)
+     ============================================================ */
+  .pair-1 .pair-name,
+  .pair-1 .sample h2,
+  .pair-1 .sample .mini-subject {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 0;
+    font-weight: 400;
+  }
+  .pair-1 .sample h2 { font-size: 48px; }
+  .pair-1 .sample .mini-subject {
+    font-size: 22px;
+    font-variation-settings: 'opsz' 36, 'SOFT' 20;
+  }
+  .pair-1 .sample,
+  .pair-1 .sample .lede,
+  .pair-1 .sample .mini-summary,
+  .pair-1 .sample .section-label {
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .pair-1 .sample .date,
+  .pair-1 .sample .mini-meta,
+  .pair-1 .badge {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ============================================================
+     PAIR 2 — Instrument Serif + Geist + Geist Mono
+     ============================================================ */
+  .pair-2 .pair-name,
+  .pair-2 .sample h2,
+  .pair-2 .sample .mini-subject {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+  }
+  .pair-2 .sample h2 { font-size: 56px; letter-spacing: -0.02em; }
+  .pair-2 .sample h2 em { font-style: italic; color: var(--accent); }
+  .pair-2 .sample .mini-subject { font-size: 24px; letter-spacing: -0.01em; }
+  .pair-2 .sample,
+  .pair-2 .sample .lede,
+  .pair-2 .sample .mini-summary,
+  .pair-2 .sample .section-label {
+    font-family: 'Geist', sans-serif;
+  }
+  .pair-2 .sample .date,
+  .pair-2 .sample .mini-meta,
+  .pair-2 .badge {
+    font-family: 'Geist Mono', monospace;
+  }
+
+  /* ============================================================
+     PAIR 3 — DM Serif Display + Inter Tight + DM Mono (refined current)
+     ============================================================ */
+  .pair-3 .pair-name,
+  .pair-3 .sample h2,
+  .pair-3 .sample .mini-subject {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+  }
+  .pair-3 .sample h2 { font-size: 48px; letter-spacing: -0.02em; }
+  .pair-3 .sample .mini-subject { font-size: 22px; }
+  .pair-3 .sample,
+  .pair-3 .sample .lede,
+  .pair-3 .sample .mini-summary,
+  .pair-3 .sample .section-label {
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .pair-3 .sample .date,
+  .pair-3 .sample .mini-meta,
+  .pair-3 .badge {
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ============================================================
+     PAIR 4 — Newsreader + General Sans + DM Mono
+     ============================================================ */
+  .pair-4 .pair-name,
+  .pair-4 .sample h2,
+  .pair-4 .sample .mini-subject {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+  }
+  .pair-4 .sample h2 {
+    font-size: 50px;
+    font-variation-settings: 'opsz' 72;
+    letter-spacing: -0.022em;
+  }
+  .pair-4 .sample .mini-subject {
+    font-size: 24px;
+    font-variation-settings: 'opsz' 36;
+  }
+  .pair-4 .sample,
+  .pair-4 .sample .lede,
+  .pair-4 .sample .mini-summary,
+  .pair-4 .sample .section-label {
+    font-family: 'General Sans', sans-serif;
+  }
+  .pair-4 .sample .date,
+  .pair-4 .sample .mini-meta,
+  .pair-4 .badge {
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ============================================================
+     Reading test block — same paragraph in each pairing's body font
+     ============================================================ */
+  .reading {
+    padding: 22px 32px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .reading-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .reading p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    max-width: 60ch;
+  }
+  .pair-1 .reading p { font-family: 'Inter Tight', sans-serif; }
+  .pair-2 .reading p { font-family: 'Geist', sans-serif; }
+  .pair-3 .reading p { font-family: 'Inter Tight', sans-serif; }
+  .pair-4 .reading p { font-family: 'General Sans', sans-serif; }
+
+  /* ============================================================
+     Footer / recommendation
+     ============================================================ */
+  .verdict {
+    margin: 56px auto 0;
+    max-width: 880px;
+    padding: 26px 30px;
+    background: var(--bg2);
+    border: 1px solid rgba(176,109,42,0.4);
+    border-radius: 12px;
+  }
+  .verdict-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .verdict h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+  }
+  .verdict p {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text2);
+    margin: 0 0 10px;
+    max-width: 64ch;
+  }
+  .verdict p strong { color: var(--text); }
+  .verdict-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 16px;
+    line-height: 1.7;
+  }
+  .verdict-meta b { color: var(--text2); font-weight: 500; }
+
+  .swatches {
+    display: flex;
+    gap: 0;
+    margin-top: 16px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .swatch {
+    flex: 1;
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.85);
+  }
+  .swatch.s-bg { background: #f4efe4; color: #14110d; }
+  .swatch.s-text { background: #14110d; }
+  .swatch.s-text2 { background: #4a4540; }
+  .swatch.s-text3 { background: #7a7068; }
+  .swatch.s-accent { background: #b06d2a; }
+  .swatch.s-urgent { background: #a52a1a; }
+  .swatch.s-week { background: #4d6b3e; }
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <div class="chrome-top">
+    <h1>Mail Digest — Typography Explorer</h1>
+    <p style="margin-left:auto">4 pairings tipográficos · paleta refinada · briefing hero como teste</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="grid">
+
+    <!-- ============================================================
+         PAIR 1 — RECOMMENDED
+         ============================================================ -->
+    <div class="card pair-1 recommended">
+      <div class="card-head">
+        <div class="pair-name">1 · Fraunces + Inter Tight</div>
+        <div class="pair-tag"><span class="star">RECOMENDADO</span> editorial · variable · optical sizing</div>
+        <p class="pair-desc">Fraunces é variável com optical sizing — uma única família serve do hero gigante (48px com curvas dramáticas) ao mini-card (22px com desenho ajustado para legibilidade). Inter Tight desaparece como UI competente. JetBrains Mono dá hierarquia aos metadados.</p>
+        <div class="pair-stack">
+          <b>Headings ·</b> Fraunces (Google Fonts) — variable, free<br>
+          <b>UI / body ·</b> Inter Tight (Google Fonts) — 9 pesos, free<br>
+          <b>Mono ·</b> JetBrains Mono (Google Fonts) — 8 pesos, free
+        </div>
+      </div>
+      <div class="sample">
+        <div class="date">Segunda · 25 Maio 2026 · briefing matinal</div>
+        <h2>Bom dia, Tiago.</h2>
+        <p class="lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+        <div class="section-label">O que precisa de ti</div>
+        <div class="mini-card">
+          <div class="mini-meta"><span class="badge today">Hoje</span><span class="sender">NOS</span><span>·</span><span>23 Mai 14:02</span></div>
+          <h3 class="mini-subject">Não recebemos o pagamento da fatura NOS</h3>
+          <p class="mini-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>.</p>
+        </div>
+      </div>
+      <div class="reading">
+        <div class="reading-label">Teste de leitura · 14px / line-height 1.7</div>
+        <p>O Lutz Mader respondeu à thread sobre certificate monitoring. Pergunta se preferes a integração proposta ou a abordagem simples com cron e openssl. Espera resposta esta semana — escrevi um rascunho que diz que vais pela abordagem simples por agora, com nota de revisitar em Setembro.</p>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PAIR 2 — Instrument Serif
+         ============================================================ -->
+    <div class="card pair-2">
+      <div class="card-head">
+        <div class="pair-name">2 · Instrument Serif + Geist</div>
+        <div class="pair-tag">moderno · italic dramático · graphic</div>
+        <p class="pair-desc">Instrument Serif é a fonte do estúdio Instrument (agência da Wikipedia, Stripe, Slack). Tem um italic stunning que podemos usar para destacar palavras-chave nos headlines. Geist é a sans da Vercel, optimizada para UI moderna. Resultado: ar mais "editorial digital, tech-forward".</p>
+        <div class="pair-stack">
+          <b>Headings ·</b> Instrument Serif (Google Fonts) — free<br>
+          <b>UI / body ·</b> Geist (Vercel CDN) — variable, free<br>
+          <b>Mono ·</b> Geist Mono (Vercel CDN) — variable, free
+        </div>
+      </div>
+      <div class="sample">
+        <div class="date">Segunda · 25 Maio 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+        <div class="section-label">O que precisa de ti</div>
+        <div class="mini-card">
+          <div class="mini-meta"><span class="badge today">Hoje</span><span class="sender">NOS</span><span>·</span><span>23 Mai 14:02</span></div>
+          <h3 class="mini-subject">Não recebemos o pagamento da fatura NOS</h3>
+          <p class="mini-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>.</p>
+        </div>
+      </div>
+      <div class="reading">
+        <div class="reading-label">Teste de leitura · 14px / line-height 1.7</div>
+        <p>O Lutz Mader respondeu à thread sobre certificate monitoring. Pergunta se preferes a integração proposta ou a abordagem simples com cron e openssl. Espera resposta esta semana — escrevi um rascunho que diz que vais pela abordagem simples por agora, com nota de revisitar em Setembro.</p>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PAIR 3 — Refined current
+         ============================================================ -->
+    <div class="card pair-3">
+      <div class="card-head">
+        <div class="pair-name">3 · DM Serif Display + Inter Tight</div>
+        <div class="pair-tag">evolução · keep DM Serif · troca Syne por Inter Tight</div>
+        <p class="pair-desc">A menor mudança possível: mantém DM Serif Display que já usas (e que reconheces visualmente), mas substitui Syne por Inter Tight. Resolve o problema do corpo cansativo sem perder a identidade já estabelecida no site. Cost: zero re-aprendizagem.</p>
+        <div class="pair-stack">
+          <b>Headings ·</b> DM Serif Display (Google Fonts) — keep<br>
+          <b>UI / body ·</b> Inter Tight (Google Fonts) — substitui Syne<br>
+          <b>Mono ·</b> DM Mono (Google Fonts) — keep
+        </div>
+      </div>
+      <div class="sample">
+        <div class="date">Segunda · 25 Maio 2026 · briefing matinal</div>
+        <h2>Bom dia, Tiago.</h2>
+        <p class="lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+        <div class="section-label">O que precisa de ti</div>
+        <div class="mini-card">
+          <div class="mini-meta"><span class="badge today">Hoje</span><span class="sender">NOS</span><span>·</span><span>23 Mai 14:02</span></div>
+          <h3 class="mini-subject">Não recebemos o pagamento da fatura NOS</h3>
+          <p class="mini-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>.</p>
+        </div>
+      </div>
+      <div class="reading">
+        <div class="reading-label">Teste de leitura · 14px / line-height 1.7</div>
+        <p>O Lutz Mader respondeu à thread sobre certificate monitoring. Pergunta se preferes a integração proposta ou a abordagem simples com cron e openssl. Espera resposta esta semana — escrevi um rascunho que diz que vais pela abordagem simples por agora, com nota de revisitar em Setembro.</p>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PAIR 4 — Newsreader
+         ============================================================ -->
+    <div class="card pair-4">
+      <div class="card-head">
+        <div class="pair-name">4 · Newsreader + General Sans</div>
+        <div class="pair-tag">jornal · leitura longa · production type</div>
+        <p class="pair-desc">Newsreader (Production Type) foi desenhada especificamente para leitura prolongada em ecrã. É a fonte de referência para news apps. Tem optical sizing. General Sans (Fontshare) é uma sans neutra com 7 pesos. Pairing mais "jornal de manhã" possível.</p>
+        <div class="pair-stack">
+          <b>Headings ·</b> Newsreader (Google Fonts) — variable, free<br>
+          <b>UI / body ·</b> General Sans (Fontshare) — free<br>
+          <b>Mono ·</b> DM Mono (Google Fonts) — keep
+        </div>
+      </div>
+      <div class="sample">
+        <div class="date">Segunda · 25 Maio 2026 · briefing matinal</div>
+        <h2>Bom dia, Tiago.</h2>
+        <p class="lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+        <div class="section-label">O que precisa de ti</div>
+        <div class="mini-card">
+          <div class="mini-meta"><span class="badge today">Hoje</span><span class="sender">NOS</span><span>·</span><span>23 Mai 14:02</span></div>
+          <h3 class="mini-subject">Não recebemos o pagamento da fatura NOS</h3>
+          <p class="mini-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>.</p>
+        </div>
+      </div>
+      <div class="reading">
+        <div class="reading-label">Teste de leitura · 14px / line-height 1.7</div>
+        <p>O Lutz Mader respondeu à thread sobre certificate monitoring. Pergunta se preferes a integração proposta ou a abordagem simples com cron e openssl. Espera resposta esta semana — escrevi um rascunho que diz que vais pela abordagem simples por agora, com nota de revisitar em Setembro.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VERDICT -->
+  <div class="verdict">
+    <div class="verdict-label">★ Recomendação final</div>
+    <h3>Pair 1 — Fraunces + Inter Tight + JetBrains Mono</h3>
+    <p>
+      Fraunces é o único <strong>variable + optical sizing</strong> deste grupo. Significa que uma única fonte cobre desde o hero a 48px (com personalidade dramática) ao mini-card a 22px e até subtítulos a 18px (com desenho adaptado para legibilidade) — sem precisares de uma família secundária. Tem o axis <code>SOFT</code> para tornar as curvas mais humanas e <code>WONK</code> para swashes irregulares (use it sparingly). Cobre PT-PT, EN, FR sem problemas.
+    </p>
+    <p>
+      Inter Tight resolve o problema de <strong>Syne ser uma display font</strong> a fazer de UI font. É a default escolha de Linear, Vercel, e outros produtos editoriais modernos — desaparece de propósito para deixar o conteúdo respirar.
+    </p>
+    <p>
+      JetBrains Mono substitui DM Mono com mais pesos (8 vs 2), mais glifos, e ligaturas opcionais — útil para hierarquia de metadados, prefixos de email, contagens.
+    </p>
+
+    <div class="verdict-meta">
+      <b>Performance ·</b> total ~180KB woff2 (subset latin-ext)<br>
+      <b>License ·</b> SIL Open Font · todos free para uso comercial<br>
+      <b>Load order ·</b> Fraunces (preload, critical) · Inter Tight (preload) · JetBrains Mono (lazy)
+    </div>
+
+    <div class="swatches" title="Paleta refinada">
+      <div class="swatch s-bg">#f4efe4 bg</div>
+      <div class="swatch s-text">#14110d ink</div>
+      <div class="swatch s-text2">#4a4540 sub</div>
+      <div class="swatch s-text3">#7a7068 hint</div>
+      <div class="swatch s-accent">#b06d2a amb</div>
+      <div class="swatch s-urgent">#a52a1a rst</div>
+      <div class="swatch s-week">#4d6b3e sag</div>
+    </div>
+
+    <p style="margin-top:16px; font-size:13px;">
+      <strong>Mudança na paleta:</strong> apenas <code>--bg</code> de <code>#f1ede4</code> para <code>#f4efe4</code> (mais cremoso) e <code>--accent</code> de <code>#b8821b</code> saffron para <code>#b06d2a</code> burnt amber — mais sofisticado e tem contraste suficiente para servir como cor de marca em CTAs, badges hoje, e logo dot. Resto fica como na paleta A.
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>

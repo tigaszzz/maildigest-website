@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — 3 Alternativas Coloridas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #2a2723;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 450;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 40px 24px 60px;
+  }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; }
+  .index-head {
+    color: #f4efe5;
+    padding: 0 16px 40px;
+  }
+  .index-head h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 400;
+    font-size: 38px;
+    letter-spacing: -0.022em;
+    margin: 0 0 8px;
+  }
+  .index-head p {
+    font-size: 14px;
+    color: rgba(244,239,229,0.7);
+    margin: 0;
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+
+  /* ============================================================
+     Demo frame — each palette renders inside its own iframe-like scope
+     ============================================================ */
+  .demo {
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,0.4);
+  }
+  .demo-bar {
+    display: flex;
+    align-items: center;
+    padding: 14px 22px;
+    color: #f4efe5;
+    background: #1a1815;
+    gap: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .demo-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(244,239,229,0.55);
+  }
+  .demo-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.015em;
+    color: #f4efe5;
+  }
+  .demo-desc {
+    font-size: 12.5px;
+    color: rgba(244,239,229,0.6);
+    margin-left: auto;
+    text-align: right;
+    max-width: 50ch;
+    line-height: 1.5;
+  }
+  .demo-swatches {
+    display: flex;
+    gap: 4px;
+  }
+  .demo-sw {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ===== Demo body (palette-scoped) ===== */
+  .demo-body {
+    padding: 36px 36px 28px;
+    font-family: 'Inter Tight', sans-serif;
+    line-height: 1.55;
+  }
+  .demo-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 400;
+    font-size: 44px;
+    letter-spacing: -0.024em;
+    line-height: 1.05;
+    margin: 0 0 14px;
+  }
+  .demo-hero h2 em { font-style: italic; }
+  .demo-lede {
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 24px;
+    max-width: 56ch;
+  }
+  .demo-lede strong { font-weight: 600; }
+
+  .demo-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .demo-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .demo-stat {
+    padding: 14px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .demo-stat .num {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .demo-stat .lbl { font-size: 11.5px; font-weight: 500; line-height: 1.25; }
+  .demo-stat .lbl strong { display: block; font-weight: 600; opacity: 0.9; }
+
+  /* Section */
+  .demo-sec-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+  .demo-sec-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .demo-sec-head h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.018em;
+    line-height: 1;
+    margin: 0;
+    flex: 1;
+  }
+  .demo-sec-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+  }
+
+  /* Card */
+  .demo-card { margin-bottom: 12px; overflow: hidden; }
+  .demo-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .demo-card-meta .sender { font-weight: 600; }
+  .demo-card-meta .addr { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  .demo-card-meta .time { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; margin-left: auto; }
+  .demo-card h4 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0 0 10px;
+  }
+  .demo-card-summary {
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0 0 14px;
+    max-width: 56ch;
+  }
+  .demo-card-summary strong { font-weight: 600; }
+  .demo-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* Badge */
+  .demo-badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    line-height: 1;
+  }
+
+  /* Button */
+  .demo-btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .demo-btn svg { width: 12px; height: 12px; }
+
+  /* Task card */
+  .demo-task {
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .demo-task-check {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .demo-task-text { font-size: 13.5px; line-height: 1.4; margin-bottom: 3px; }
+  .demo-task-meta { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+
+  /* Floating ask bar */
+  .demo-ask {
+    margin-top: 24px;
+    padding: 8px 10px 8px 22px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .demo-ask .prompt { flex: 1; }
+  .demo-ask .kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+  .demo-ask .ask-go {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .demo-ask .ask-go svg { width: 13px; height: 13px; }
+
+  /* ============================================================
+     ─────────── E · SUNSET & CORAL ───────────
+     ============================================================ */
+  .palette-E {
+    background: #fbf3e8;
+    color: #1a130b;
+  }
+  .palette-E .demo-hero h2 em {
+    background: linear-gradient(135deg, #ef5b3a 0%, #ec407a 60%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .palette-E .demo-lede { color: #4a3a2d; }
+  .palette-E .demo-lede strong { color: #1a130b; }
+  .palette-E .demo-date { color: #8a715a; }
+
+  .palette-E .demo-stat.s1 { background: #ffe1d4; color: #c23a1c; }
+  .palette-E .demo-stat.s2 { background: #ffe8b8; color: #b06400; }
+  .palette-E .demo-stat.s3 { background: #d8ebd0; color: #486a2c; }
+  .palette-E .demo-stat.s4 { background: #f0e1d5; color: #7e5a47; }
+
+  .palette-E .demo-sec-head { border-bottom: 1px solid rgba(26,19,11,0.12); }
+  .palette-E .demo-sec-head h3 { color: #1a130b; }
+  .palette-E .demo-sec-meta { color: #8a715a; }
+
+  .palette-E .demo-card {
+    background: #ffffff;
+    border: 1px solid rgba(26,19,11,0.10);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(26,19,11,0.04);
+  }
+  .palette-E .demo-card.urgent { background: linear-gradient(180deg, #ffe8db 0%, #ffffff 14%, #ffffff 100%); }
+  .palette-E .demo-card-body { padding: 18px 22px; }
+  .palette-E .demo-card-meta .sender { color: #1a130b; }
+  .palette-E .demo-card-meta .addr, .palette-E .demo-card-meta .time { color: #8a715a; }
+  .palette-E .demo-card h4 { color: #1a130b; }
+  .palette-E .demo-card-summary { color: #4a3a2d; }
+  .palette-E .demo-card-summary strong { color: #1a130b; }
+
+  .palette-E .demo-badge.urgent { background: #ef5b3a; color: white; }
+  .palette-E .demo-badge.today { background: #f59e0b; color: #1a130b; }
+  .palette-E .demo-badge.ai { background: #8b5cf6; color: white; }
+
+  .palette-E .demo-btn { background: white; color: #4a3a2d; border: 1px solid rgba(26,19,11,0.18); }
+  .palette-E .demo-btn:hover { background: #fbf3e8; color: #1a130b; border-color: rgba(26,19,11,0.32); }
+  .palette-E .demo-btn-coral {
+    background: linear-gradient(135deg, #ef5b3a 0%, #ec407a 100%);
+    color: white;
+    border-color: transparent;
+  }
+  .palette-E .demo-btn-coral:hover { opacity: 0.9; color: white; }
+  .palette-E .demo-btn-primary { background: #1a130b; color: #fbf3e8; border-color: #1a130b; }
+
+  .palette-E .demo-task {
+    background: white;
+    border: 1px solid rgba(26,19,11,0.10);
+    border-left: 3px solid #f59e0b;
+    border-radius: 12px;
+  }
+  .palette-E .demo-task-check { border: 1.5px solid rgba(26,19,11,0.20); background: #fbf3e8; }
+  .palette-E .demo-task-text { color: #1a130b; }
+  .palette-E .demo-task-meta { color: #8a715a; }
+
+  .palette-E .demo-ask {
+    background: linear-gradient(135deg, #1a130b 0%, #3a2418 100%);
+    color: #fbf3e8;
+  }
+  .palette-E .demo-ask .prompt { color: rgba(251,243,232,0.75); }
+  .palette-E .demo-ask .prompt strong { color: #fbf3e8; }
+  .palette-E .demo-ask .kbd { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+  .palette-E .demo-ask .ask-go {
+    background: linear-gradient(135deg, #ef5b3a 0%, #ec407a 100%);
+    color: white;
+  }
+
+  /* ============================================================
+     ─────────── F · ATELIER NOIR ───────────
+     ============================================================ */
+  .palette-F {
+    background: #0d0e12;
+    color: #f0eee8;
+  }
+  .palette-F .demo-hero h2 { color: #f7f5ef; }
+  .palette-F .demo-hero h2 em {
+    background: linear-gradient(135deg, #a78bfa 0%, #67e8f9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .palette-F .demo-lede { color: #b8b5ad; }
+  .palette-F .demo-lede strong { color: #f7f5ef; }
+  .palette-F .demo-date { color: #7a766e; }
+
+  .palette-F .demo-stat.s1 { background: rgba(255,61,131,0.15); color: #ff6b9d; }
+  .palette-F .demo-stat.s2 { background: rgba(251,191,36,0.13); color: #fbbf24; }
+  .palette-F .demo-stat.s3 { background: rgba(103,232,249,0.13); color: #67e8f9; }
+  .palette-F .demo-stat.s4 { background: rgba(255,255,255,0.06); color: #b8b5ad; }
+
+  .palette-F .demo-sec-head { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .palette-F .demo-sec-head h3 { color: #f7f5ef; }
+  .palette-F .demo-sec-meta { color: #7a766e; }
+
+  .palette-F .demo-card {
+    background: #16181f;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+  .palette-F .demo-card.urgent {
+    border-top: 1px solid rgba(255,61,131,0.5);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 0 0 1px rgba(255,61,131,0.15);
+  }
+  .palette-F .demo-card-body { padding: 18px 22px; }
+  .palette-F .demo-card-meta .sender { color: #f7f5ef; }
+  .palette-F .demo-card-meta .addr, .palette-F .demo-card-meta .time { color: #7a766e; }
+  .palette-F .demo-card h4 { color: #f7f5ef; }
+  .palette-F .demo-card-summary { color: #b8b5ad; }
+  .palette-F .demo-card-summary strong { color: #f7f5ef; }
+
+  .palette-F .demo-badge.urgent { background: #ff3d83; color: #0d0e12; }
+  .palette-F .demo-badge.today { background: #fbbf24; color: #0d0e12; }
+  .palette-F .demo-badge.ai { background: rgba(167,139,250,0.18); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.4); }
+
+  .palette-F .demo-btn {
+    background: rgba(255,255,255,0.04);
+    color: #b8b5ad;
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .palette-F .demo-btn:hover { background: rgba(255,255,255,0.08); color: #f7f5ef; border-color: rgba(255,255,255,0.20); }
+  .palette-F .demo-btn-electric {
+    background: #a78bfa;
+    color: #0d0e12;
+    border-color: #a78bfa;
+    box-shadow: 0 0 24px -8px rgba(167,139,250,0.6);
+  }
+  .palette-F .demo-btn-electric:hover { background: #c4b5fd; border-color: #c4b5fd; color: #0d0e12; }
+  .palette-F .demo-btn-primary {
+    background: #ff3d83;
+    color: white;
+    border-color: #ff3d83;
+    box-shadow: 0 0 24px -8px rgba(255,61,131,0.6);
+  }
+
+  .palette-F .demo-task {
+    background: #16181f;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid #fbbf24;
+    border-radius: 10px;
+  }
+  .palette-F .demo-task-check { border: 1.5px solid rgba(255,255,255,0.20); background: #0d0e12; }
+  .palette-F .demo-task-text { color: #f7f5ef; }
+  .palette-F .demo-task-meta { color: #7a766e; }
+
+  .palette-F .demo-ask {
+    background: #16181f;
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #f7f5ef;
+  }
+  .palette-F .demo-ask .prompt { color: rgba(247,245,239,0.6); }
+  .palette-F .demo-ask .prompt strong { color: #f7f5ef; }
+  .palette-F .demo-ask .kbd { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+  .palette-F .demo-ask .ask-go {
+    background: #a78bfa;
+    color: #0d0e12;
+    box-shadow: 0 0 16px -4px rgba(167,139,250,0.7);
+  }
+
+  /* ============================================================
+     ─────────── G · EDITORIAL BLOCK ───────────
+     ============================================================ */
+  .palette-G {
+    background: #fafaf6;
+    color: #0a0a0a;
+  }
+  .palette-G .demo-hero h2 { color: #0a0a0a; letter-spacing: -0.025em; }
+  .palette-G .demo-hero h2 em {
+    font-style: normal;
+    background: #0035bb;
+    color: #fafaf6;
+    padding: 0 12px;
+    margin: 0 -2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .palette-G .demo-lede { color: #383838; }
+  .palette-G .demo-lede strong { color: #0a0a0a; background: #fff176; padding: 0 4px; }
+  .palette-G .demo-date { color: #0a0a0a; font-weight: 600; }
+
+  .palette-G .demo-stat {
+    border: 2px solid #0a0a0a;
+    border-radius: 0;
+  }
+  .palette-G .demo-stat.s1 { background: #e53935; color: #fafaf6; }
+  .palette-G .demo-stat.s2 { background: #fff176; color: #0a0a0a; }
+  .palette-G .demo-stat.s3 { background: #43a047; color: #fafaf6; }
+  .palette-G .demo-stat.s4 { background: #fafaf6; color: #0a0a0a; }
+
+  .palette-G .demo-sec-head { border-bottom: 2px solid #0a0a0a; }
+  .palette-G .demo-sec-head h3 { color: #0a0a0a; }
+  .palette-G .demo-sec-meta { color: #383838; font-weight: 600; }
+
+  .palette-G .demo-card {
+    background: white;
+    border: 2px solid #0a0a0a;
+    border-radius: 0;
+    box-shadow: 5px 5px 0 #0a0a0a;
+  }
+  .palette-G .demo-card.urgent { border-color: #0a0a0a; border-top-width: 8px; border-top-color: #e53935; }
+  .palette-G .demo-card-body { padding: 18px 22px; }
+  .palette-G .demo-card-meta .sender { color: #0a0a0a; }
+  .palette-G .demo-card-meta .addr, .palette-G .demo-card-meta .time { color: #383838; }
+  .palette-G .demo-card h4 { color: #0a0a0a; }
+  .palette-G .demo-card-summary { color: #383838; }
+  .palette-G .demo-card-summary strong { color: #0a0a0a; }
+
+  .palette-G .demo-badge { border-radius: 0; }
+  .palette-G .demo-badge.urgent { background: #e53935; color: #fafaf6; }
+  .palette-G .demo-badge.today { background: #fff176; color: #0a0a0a; }
+  .palette-G .demo-badge.ai { background: #0035bb; color: #fafaf6; }
+
+  .palette-G .demo-btn {
+    background: #fafaf6;
+    color: #0a0a0a;
+    border: 2px solid #0a0a0a;
+    border-radius: 0;
+    font-weight: 600;
+  }
+  .palette-G .demo-btn:hover { background: #0a0a0a; color: #fafaf6; }
+  .palette-G .demo-btn-cobalt {
+    background: #0035bb;
+    color: #fafaf6;
+    border-color: #0035bb;
+  }
+  .palette-G .demo-btn-cobalt:hover { background: #0a0a0a; border-color: #0a0a0a; color: #fafaf6; }
+  .palette-G .demo-btn-primary { background: #e53935; color: #fafaf6; border-color: #e53935; }
+  .palette-G .demo-btn-primary:hover { background: #0a0a0a; border-color: #0a0a0a; color: #fafaf6; }
+
+  .palette-G .demo-task {
+    background: white;
+    border: 2px solid #0a0a0a;
+    border-left-width: 8px;
+    border-left-color: #fff176;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 #0a0a0a;
+  }
+  .palette-G .demo-task-check {
+    border: 2px solid #0a0a0a;
+    background: white;
+    border-radius: 0;
+  }
+  .palette-G .demo-task-text { color: #0a0a0a; }
+  .palette-G .demo-task-meta { color: #383838; font-weight: 600; }
+
+  .palette-G .demo-ask {
+    background: #0035bb;
+    color: #fafaf6;
+    border-radius: 0;
+    border: 2px solid #0a0a0a;
+    box-shadow: 5px 5px 0 #0a0a0a;
+  }
+  .palette-G .demo-ask .prompt { color: rgba(250,250,246,0.85); }
+  .palette-G .demo-ask .prompt strong { color: #fff176; }
+  .palette-G .demo-ask .kbd { background: rgba(250,250,246,0.18); color: #fafaf6; border-radius: 0; }
+  .palette-G .demo-ask .ask-go {
+    background: #e53935;
+    color: #fafaf6;
+    border-radius: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="index-head">
+    <h1>3 alternativas coloridas</h1>
+    <p>Cada paleta aplica-se ao mesmo briefing (hero + secção "O que precisa de ti" + tarefa + ask bar). Mesma UX, três personalidades visuais.</p>
+  </div>
+
+  <!-- ============================================================
+       PALETTE E — SUNSET & CORAL
+       ============================================================ -->
+  <div class="demo">
+    <div class="demo-bar">
+      <span class="demo-tag">E</span>
+      <span class="demo-name">Sunset &amp; Coral</span>
+      <div class="demo-swatches">
+        <div class="demo-sw" style="background:#ef5b3a"></div>
+        <div class="demo-sw" style="background:#ec407a"></div>
+        <div class="demo-sw" style="background:#8b5cf6"></div>
+        <div class="demo-sw" style="background:#f59e0b"></div>
+        <div class="demo-sw" style="background:#fbf3e8"></div>
+      </div>
+      <div class="demo-desc">Cream + coral quente + gradiente solar. Humanista, magazine de domingo. Brand coral substitui o iris.</div>
+    </div>
+
+    <div class="demo-body palette-E">
+      <div class="demo-hero">
+        <div class="demo-date">Segunda · 25 Mai 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="demo-lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div class="demo-stats">
+        <div class="demo-stat s1"><span class="num">0</span><span class="lbl"><strong>Urgentes</strong>nada urgente</span></div>
+        <div class="demo-stat s2"><span class="num">2</span><span class="lbl"><strong>Hoje</strong>precisam de ti</span></div>
+        <div class="demo-stat s3"><span class="num">4</span><span class="lbl"><strong>Semana</strong>podem esperar</span></div>
+        <div class="demo-stat s4"><span class="num">17</span><span class="lbl"><strong>Tratei</strong>arquivado</span></div>
+      </div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#ef5b3a"></div>
+        <h3>O que precisa de ti</h3>
+        <div class="demo-sec-meta">2 itens · ~7 min</div>
+      </div>
+
+      <div class="demo-card urgent">
+        <div class="demo-card-body">
+          <div class="demo-card-meta">
+            <span class="demo-badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span class="addr">info@info.nos.pt</span>
+            <span class="time">23 Mai · 14:02</span>
+          </div>
+          <h4>Não recebemos o pagamento da fatura NOS</h4>
+          <p class="demo-card-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>. Possível débito directo falhado — confirma com banco.</p>
+          <div class="demo-card-actions">
+            <button class="demo-btn demo-btn-coral">Pagar agora</button>
+            <button class="demo-btn">Lembrete 27 Mai</button>
+            <button class="demo-btn">Ignorar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#f59e0b"></div>
+        <h3>O que eu proponho</h3>
+        <div class="demo-sec-meta">1 tarefa</div>
+      </div>
+
+      <div class="demo-task">
+        <div class="demo-task-check"></div>
+        <div style="flex:1">
+          <div class="demo-task-text">Responder ao Lutz sobre certificate monitoring</div>
+          <div class="demo-task-meta">sugestão: hoje à tarde</div>
+        </div>
+        <button class="demo-btn demo-btn-primary">Aceitar</button>
+      </div>
+
+      <div class="demo-ask">
+        <span class="prompt"><strong>Pergunta algo</strong> — "o que recebi do banco esta semana?"</span>
+        <span class="kbd">⌘ K</span>
+        <button class="ask-go" title="Falar">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PALETTE F — ATELIER NOIR
+       ============================================================ -->
+  <div class="demo">
+    <div class="demo-bar">
+      <span class="demo-tag">F</span>
+      <span class="demo-name">Atelier Noir</span>
+      <div class="demo-swatches">
+        <div class="demo-sw" style="background:#a78bfa"></div>
+        <div class="demo-sw" style="background:#67e8f9"></div>
+        <div class="demo-sw" style="background:#ff3d83"></div>
+        <div class="demo-sw" style="background:#fbbf24"></div>
+        <div class="demo-sw" style="background:#0d0e12"></div>
+      </div>
+      <div class="demo-desc">Dark + electric. Cards charcoal, accents neon. Linear/Raycast/Vercel territory.</div>
+    </div>
+
+    <div class="demo-body palette-F">
+      <div class="demo-hero">
+        <div class="demo-date">Segunda · 25 Mai 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="demo-lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div class="demo-stats">
+        <div class="demo-stat s1"><span class="num">0</span><span class="lbl"><strong>Urgentes</strong>nada urgente</span></div>
+        <div class="demo-stat s2"><span class="num">2</span><span class="lbl"><strong>Hoje</strong>precisam de ti</span></div>
+        <div class="demo-stat s3"><span class="num">4</span><span class="lbl"><strong>Semana</strong>podem esperar</span></div>
+        <div class="demo-stat s4"><span class="num">17</span><span class="lbl"><strong>Tratei</strong>arquivado</span></div>
+      </div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#ff3d83"></div>
+        <h3>O que precisa de ti</h3>
+        <div class="demo-sec-meta">2 itens · ~7 min</div>
+      </div>
+
+      <div class="demo-card urgent">
+        <div class="demo-card-body">
+          <div class="demo-card-meta">
+            <span class="demo-badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span class="addr">info@info.nos.pt</span>
+            <span class="time">23 Mai · 14:02</span>
+          </div>
+          <h4>Não recebemos o pagamento da fatura NOS</h4>
+          <p class="demo-card-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>. Possível débito directo falhado — confirma com banco.</p>
+          <div class="demo-card-actions">
+            <button class="demo-btn demo-btn-primary">Pagar agora</button>
+            <button class="demo-btn">Lembrete 27 Mai</button>
+            <button class="demo-btn">Ignorar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#fbbf24"></div>
+        <h3>O que eu proponho</h3>
+        <div class="demo-sec-meta">1 tarefa</div>
+      </div>
+
+      <div class="demo-task">
+        <div class="demo-task-check"></div>
+        <div style="flex:1">
+          <div class="demo-task-text">Responder ao Lutz sobre certificate monitoring</div>
+          <div class="demo-task-meta">sugestão: hoje à tarde</div>
+        </div>
+        <button class="demo-btn demo-btn-electric">Aceitar</button>
+      </div>
+
+      <div class="demo-ask">
+        <span class="prompt"><strong>Pergunta algo</strong> — "o que recebi do banco esta semana?"</span>
+        <span class="kbd">⌘ K</span>
+        <button class="ask-go" title="Falar">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PALETTE G — EDITORIAL BLOCK
+       ============================================================ -->
+  <div class="demo">
+    <div class="demo-bar">
+      <span class="demo-tag">G</span>
+      <span class="demo-name">Editorial Block</span>
+      <div class="demo-swatches">
+        <div class="demo-sw" style="background:#0035bb"></div>
+        <div class="demo-sw" style="background:#e53935"></div>
+        <div class="demo-sw" style="background:#fff176"></div>
+        <div class="demo-sw" style="background:#43a047"></div>
+        <div class="demo-sw" style="background:#0a0a0a"></div>
+      </div>
+      <div class="demo-desc">Bauhaus moderno. Cobalt + primárias saturadas + bordas 2px e sombras duras. Design-forward.</div>
+    </div>
+
+    <div class="demo-body palette-G">
+      <div class="demo-hero">
+        <div class="demo-date">Segunda · 25 Mai 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="demo-lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div class="demo-stats">
+        <div class="demo-stat s1"><span class="num">0</span><span class="lbl"><strong>Urgentes</strong>nada urgente</span></div>
+        <div class="demo-stat s2"><span class="num">2</span><span class="lbl"><strong>Hoje</strong>precisam de ti</span></div>
+        <div class="demo-stat s3"><span class="num">4</span><span class="lbl"><strong>Semana</strong>podem esperar</span></div>
+        <div class="demo-stat s4"><span class="num">17</span><span class="lbl"><strong>Tratei</strong>arquivado</span></div>
+      </div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#e53935"></div>
+        <h3>O que precisa de ti</h3>
+        <div class="demo-sec-meta">2 itens · ~7 min</div>
+      </div>
+
+      <div class="demo-card urgent">
+        <div class="demo-card-body">
+          <div class="demo-card-meta">
+            <span class="demo-badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span class="addr">info@info.nos.pt</span>
+            <span class="time">23 Mai · 14:02</span>
+          </div>
+          <h4>Não recebemos o pagamento da fatura NOS</h4>
+          <p class="demo-card-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>. Possível débito directo falhado — confirma com banco.</p>
+          <div class="demo-card-actions">
+            <button class="demo-btn demo-btn-primary">Pagar agora</button>
+            <button class="demo-btn">Lembrete 27 Mai</button>
+            <button class="demo-btn">Ignorar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#fff176"></div>
+        <h3>O que eu proponho</h3>
+        <div class="demo-sec-meta">1 tarefa</div>
+      </div>
+
+      <div class="demo-task">
+        <div class="demo-task-check"></div>
+        <div style="flex:1">
+          <div class="demo-task-text">Responder ao Lutz sobre certificate monitoring</div>
+          <div class="demo-task-meta">sugestão: hoje à tarde</div>
+        </div>
+        <button class="demo-btn demo-btn-cobalt">Aceitar</button>
+      </div>
+
+      <div class="demo-ask">
+        <span class="prompt"><strong>Pergunta algo</strong> — "o que recebi do banco esta semana?"</span>
+        <span class="kbd">⌘ K</span>
+        <button class="ask-go" title="Falar">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — Mais 3 alternativas (H · I · J)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #2a2723;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 450;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 40px 24px 60px;
+  }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; }
+  .index-head { color: #f4efe5; padding: 0 16px 40px; }
+  .index-head h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 400;
+    font-size: 38px;
+    letter-spacing: -0.022em;
+    margin: 0 0 8px;
+  }
+  .index-head p {
+    font-size: 14px;
+    color: rgba(244,239,229,0.7);
+    margin: 0;
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+
+  /* ============================================================
+     Demo frame shared structure
+     ============================================================ */
+  .demo {
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,0.4);
+  }
+  .demo-bar {
+    display: flex;
+    align-items: center;
+    padding: 14px 22px;
+    color: #f4efe5;
+    background: #1a1815;
+    gap: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .demo-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(244,239,229,0.55);
+  }
+  .demo-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.015em;
+    color: #f4efe5;
+  }
+  .demo-desc {
+    font-size: 12.5px;
+    color: rgba(244,239,229,0.6);
+    margin-left: auto;
+    text-align: right;
+    max-width: 50ch;
+    line-height: 1.5;
+  }
+  .demo-swatches { display: flex; gap: 4px; }
+  .demo-sw {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .demo-body {
+    padding: 36px 36px 28px;
+    font-family: 'Inter Tight', sans-serif;
+    line-height: 1.55;
+  }
+
+  .demo-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 400;
+    font-size: 44px;
+    letter-spacing: -0.024em;
+    line-height: 1.05;
+    margin: 0 0 14px;
+  }
+  .demo-hero h2 em { font-style: italic; }
+  .demo-lede {
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 24px;
+    max-width: 56ch;
+  }
+  .demo-lede strong { font-weight: 600; }
+  .demo-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .demo-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .demo-stat {
+    padding: 14px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .demo-stat .num {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .demo-stat .lbl { font-size: 11.5px; font-weight: 500; line-height: 1.25; }
+  .demo-stat .lbl strong { display: block; font-weight: 600; opacity: 0.9; }
+
+  .demo-sec-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+  .demo-sec-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .demo-sec-head h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.018em;
+    line-height: 1;
+    margin: 0;
+    flex: 1;
+  }
+  .demo-sec-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+  }
+
+  .demo-card { margin-bottom: 12px; overflow: hidden; }
+  .demo-card-body { padding: 18px 22px; }
+  .demo-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .demo-card-meta .sender { font-weight: 600; }
+  .demo-card-meta .addr { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+  .demo-card-meta .time { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; margin-left: auto; }
+  .demo-card h4 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0 0 10px;
+  }
+  .demo-card-summary {
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0 0 14px;
+    max-width: 56ch;
+  }
+  .demo-card-summary strong { font-weight: 600; }
+  .demo-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .demo-badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    line-height: 1;
+  }
+
+  .demo-btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .demo-task {
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .demo-task-check {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .demo-task-text { font-size: 13.5px; line-height: 1.4; margin-bottom: 3px; }
+  .demo-task-meta { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+
+  .demo-ask {
+    margin-top: 24px;
+    padding: 8px 10px 8px 22px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .demo-ask .prompt { flex: 1; }
+  .demo-ask .kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+  .demo-ask .ask-go {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .demo-ask .ask-go svg { width: 13px; height: 13px; }
+
+  /* ============================================================
+     ─────────── H · RISO PRINT ───────────
+     ============================================================ */
+  .palette-H {
+    background: #fef8e8;
+    color: #1a0e08;
+    position: relative;
+  }
+  /* halftone dot pattern overlay */
+  .palette-H::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(26,14,8,0.05) 1px, transparent 1px);
+    background-size: 6px 6px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .palette-H > * { position: relative; z-index: 1; }
+
+  .palette-H .demo-hero h2 { color: #1a0e08; }
+  .palette-H .demo-hero h2 em {
+    color: #ff3d8b;
+    font-style: italic;
+    text-shadow: 3px 3px 0 #2a4cfb;
+  }
+  .palette-H .demo-lede { color: #4a3a2c; }
+  .palette-H .demo-lede strong { color: #1a0e08; background: linear-gradient(180deg, transparent 55%, #fde047 55%); padding: 0 2px; }
+  .palette-H .demo-date { color: #7a5a3c; }
+
+  .palette-H .demo-stat.s1 { background: #ff3d8b; color: #fef8e8; }
+  .palette-H .demo-stat.s2 { background: #fde047; color: #1a0e08; }
+  .palette-H .demo-stat.s3 { background: #2a4cfb; color: #fef8e8; }
+  .palette-H .demo-stat.s4 { background: #fef8e8; color: #1a0e08; border: 1.5px dashed #1a0e08; }
+
+  .palette-H .demo-sec-head { border-bottom: 1.5px dashed rgba(26,14,8,0.3); }
+  .palette-H .demo-sec-head h3 { color: #1a0e08; }
+  .palette-H .demo-sec-meta { color: #7a5a3c; }
+
+  .palette-H .demo-card {
+    background: #ffffff;
+    border: 1.5px solid #1a0e08;
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 #ff3d8b;
+  }
+  .palette-H .demo-card.urgent { box-shadow: 4px 4px 0 #ff3d8b; }
+  .palette-H .demo-card-meta .sender { color: #1a0e08; }
+  .palette-H .demo-card-meta .addr, .palette-H .demo-card-meta .time { color: #7a5a3c; }
+  .palette-H .demo-card h4 { color: #1a0e08; }
+  .palette-H .demo-card-summary { color: #4a3a2c; }
+  .palette-H .demo-card-summary strong { color: #1a0e08; background: #fde047; padding: 0 3px; }
+
+  .palette-H .demo-badge.urgent { background: #ff3d8b; color: #fef8e8; }
+  .palette-H .demo-badge.today { background: #fde047; color: #1a0e08; }
+  .palette-H .demo-badge.ai { background: #2a4cfb; color: #fef8e8; }
+
+  .palette-H .demo-btn {
+    background: #fef8e8;
+    color: #1a0e08;
+    border: 1.5px solid #1a0e08;
+  }
+  .palette-H .demo-btn:hover { background: #1a0e08; color: #fef8e8; }
+  .palette-H .demo-btn-pink {
+    background: #ff3d8b;
+    color: #fef8e8;
+    border-color: #1a0e08;
+    box-shadow: 2px 2px 0 #1a0e08;
+  }
+  .palette-H .demo-btn-pink:hover { box-shadow: 0 0 0 #1a0e08; transform: translate(2px, 2px); color: #fef8e8; background: #ff3d8b; }
+  .palette-H .demo-btn-blue {
+    background: #2a4cfb;
+    color: #fef8e8;
+    border-color: #1a0e08;
+    box-shadow: 2px 2px 0 #1a0e08;
+  }
+  .palette-H .demo-btn-blue:hover { box-shadow: 0 0 0 #1a0e08; transform: translate(2px, 2px); color: #fef8e8; background: #2a4cfb; }
+
+  .palette-H .demo-task {
+    background: #ffffff;
+    border: 1.5px solid #1a0e08;
+    border-radius: 8px;
+    box-shadow: 3px 3px 0 #fde047;
+  }
+  .palette-H .demo-task-check { border: 1.5px solid #1a0e08; background: #fef8e8; }
+  .palette-H .demo-task-text { color: #1a0e08; }
+  .palette-H .demo-task-meta { color: #7a5a3c; }
+
+  .palette-H .demo-ask {
+    background: #1a0e08;
+    color: #fef8e8;
+    border: 1.5px solid #1a0e08;
+    box-shadow: 4px 4px 0 #ff3d8b;
+  }
+  .palette-H .demo-ask .prompt { color: rgba(254,248,232,0.7); }
+  .palette-H .demo-ask .prompt strong { color: #fde047; }
+  .palette-H .demo-ask .kbd { background: rgba(254,248,232,0.16); color: #fef8e8; }
+  .palette-H .demo-ask .ask-go { background: #ff3d8b; color: #fef8e8; }
+
+  /* ============================================================
+     ─────────── I · MOCHA ATELIER ───────────
+     ============================================================ */
+  .palette-I {
+    background: #f6f0e9;
+    color: #1e1610;
+  }
+  .palette-I .demo-hero h2 { color: #1e1610; }
+  .palette-I .demo-hero h2 em {
+    font-style: italic;
+    color: #6f513f;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  }
+  .palette-I .demo-lede { color: #5a4a3c; }
+  .palette-I .demo-lede strong { color: #1e1610; font-weight: 600; }
+  .palette-I .demo-date { color: #8e7a64; }
+
+  .palette-I .demo-stat.s1 { background: #f0d8d2; color: #8a3a31; }
+  .palette-I .demo-stat.s2 { background: #f0ddc4; color: #8b5a1d; }
+  .palette-I .demo-stat.s3 { background: #dde0cd; color: #4a5538; }
+  .palette-I .demo-stat.s4 { background: #ebe3d6; color: #6e5a47; }
+
+  .palette-I .demo-sec-head { border-bottom: 1px solid rgba(30,22,16,0.13); }
+  .palette-I .demo-sec-head h3 { color: #1e1610; }
+  .palette-I .demo-sec-meta { color: #8e7a64; }
+
+  .palette-I .demo-card {
+    background: #fbf7f1;
+    border: 1px solid rgba(30,22,16,0.13);
+    border-radius: 12px;
+  }
+  .palette-I .demo-card.urgent { border-left: 3px solid #b8473f; }
+  .palette-I .demo-card-meta .sender { color: #1e1610; }
+  .palette-I .demo-card-meta .addr, .palette-I .demo-card-meta .time { color: #8e7a64; }
+  .palette-I .demo-card h4 { color: #1e1610; }
+  .palette-I .demo-card-summary { color: #5a4a3c; }
+  .palette-I .demo-card-summary strong { color: #1e1610; }
+
+  .palette-I .demo-badge.urgent { background: #b8473f; color: #f6f0e9; }
+  .palette-I .demo-badge.today { background: #c8843e; color: #f6f0e9; }
+  .palette-I .demo-badge.ai { background: #6f513f; color: #f6f0e9; }
+
+  .palette-I .demo-btn {
+    background: #fbf7f1;
+    color: #5a4a3c;
+    border: 1px solid rgba(30,22,16,0.18);
+  }
+  .palette-I .demo-btn:hover { background: #ebe3d6; color: #1e1610; border-color: rgba(30,22,16,0.32); }
+  .palette-I .demo-btn-mocha {
+    background: #6f513f;
+    color: #f6f0e9;
+    border-color: #6f513f;
+  }
+  .palette-I .demo-btn-mocha:hover { background: #4f3a2d; border-color: #4f3a2d; color: #f6f0e9; }
+  .palette-I .demo-btn-rust {
+    background: #b8473f;
+    color: #f6f0e9;
+    border-color: #b8473f;
+  }
+
+  .palette-I .demo-task {
+    background: #fbf7f1;
+    border: 1px solid rgba(30,22,16,0.13);
+    border-left: 3px solid #c8843e;
+    border-radius: 10px;
+  }
+  .palette-I .demo-task-check { border: 1.5px solid rgba(30,22,16,0.22); background: #f6f0e9; }
+  .palette-I .demo-task-text { color: #1e1610; }
+  .palette-I .demo-task-meta { color: #8e7a64; }
+
+  .palette-I .demo-ask {
+    background: #1e1610;
+    color: #f6f0e9;
+  }
+  .palette-I .demo-ask .prompt { color: rgba(246,240,233,0.7); }
+  .palette-I .demo-ask .prompt strong { color: #f6f0e9; }
+  .palette-I .demo-ask .kbd { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+  .palette-I .demo-ask .ask-go { background: #c8843e; color: #1e1610; }
+
+  /* ============================================================
+     ─────────── J · PERIÓDICO ───────────
+     ============================================================ */
+  .palette-J {
+    background: #ffeed4;
+    color: #0a0a0a;
+  }
+  .palette-J .demo-hero h2 { color: #0a0a0a; font-size: 50px; line-height: 1; letter-spacing: -0.028em; }
+  .palette-J .demo-hero h2 em {
+    font-style: italic;
+    color: #c01a1a;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  }
+  .palette-J .demo-lede {
+    color: #2c2c2c;
+    font-size: 16.5px;
+    line-height: 1.55;
+    border-left: 3px solid #c01a1a;
+    padding-left: 16px;
+    max-width: 54ch;
+  }
+  .palette-J .demo-lede strong { color: #0a0a0a; }
+  .palette-J .demo-date {
+    color: #0a0a0a;
+    font-weight: 600;
+    border-top: 1.5px solid #0a0a0a;
+    border-bottom: 1.5px solid #0a0a0a;
+    padding: 6px 0;
+    display: inline-block;
+    margin-bottom: 18px;
+    font-size: 10.5px;
+  }
+
+  .palette-J .demo-stats { gap: 0; border: 1.5px solid #0a0a0a; border-radius: 0; }
+  .palette-J .demo-stat {
+    border-radius: 0;
+    border-right: 1.5px solid #0a0a0a;
+  }
+  .palette-J .demo-stat:last-child { border-right: none; }
+  .palette-J .demo-stat.s1 { background: #ffeed4; color: #c01a1a; }
+  .palette-J .demo-stat.s2 { background: #ffeed4; color: #c08c2a; }
+  .palette-J .demo-stat.s3 { background: #ffeed4; color: #1a3a7c; }
+  .palette-J .demo-stat.s4 { background: #ffeed4; color: #0a0a0a; }
+
+  .palette-J .demo-sec-head { border-bottom: 1.5px solid #0a0a0a; }
+  .palette-J .demo-sec-head h3 { color: #0a0a0a; }
+  .palette-J .demo-sec-meta { color: #2c2c2c; font-weight: 600; }
+
+  .palette-J .demo-card {
+    background: #fff9e6;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 0;
+  }
+  .palette-J .demo-card.urgent {
+    background: #fff9e6;
+    border-top: 6px solid #c01a1a;
+  }
+  .palette-J .demo-card-meta .sender { color: #0a0a0a; }
+  .palette-J .demo-card-meta .addr, .palette-J .demo-card-meta .time { color: #2c2c2c; }
+  .palette-J .demo-card h4 {
+    color: #0a0a0a;
+    font-size: 24px;
+    font-variation-settings: 'opsz' 36, 'SOFT' 20;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .palette-J .demo-card-summary { color: #2c2c2c; }
+  .palette-J .demo-card-summary strong { color: #0a0a0a; }
+
+  .palette-J .demo-badge { border-radius: 0; }
+  .palette-J .demo-badge.urgent { background: #c01a1a; color: #ffeed4; }
+  .palette-J .demo-badge.today { background: #c08c2a; color: #ffeed4; }
+  .palette-J .demo-badge.ai { background: #1a3a7c; color: #ffeed4; }
+
+  .palette-J .demo-btn {
+    background: #fff9e6;
+    color: #0a0a0a;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 0;
+    font-weight: 500;
+  }
+  .palette-J .demo-btn:hover { background: #0a0a0a; color: #ffeed4; }
+  .palette-J .demo-btn-red {
+    background: #c01a1a;
+    color: #ffeed4;
+    border-color: #0a0a0a;
+  }
+  .palette-J .demo-btn-red:hover { background: #0a0a0a; color: #ffeed4; }
+  .palette-J .demo-btn-navy {
+    background: #1a3a7c;
+    color: #ffeed4;
+    border-color: #0a0a0a;
+  }
+
+  .palette-J .demo-task {
+    background: #fff9e6;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 0;
+    border-left-width: 6px;
+    border-left-color: #c08c2a;
+  }
+  .palette-J .demo-task-check {
+    border: 1.5px solid #0a0a0a;
+    background: #fff9e6;
+    border-radius: 0;
+  }
+  .palette-J .demo-task-text { color: #0a0a0a; }
+  .palette-J .demo-task-meta { color: #2c2c2c; font-weight: 600; }
+
+  .palette-J .demo-ask {
+    background: #0a0a0a;
+    color: #ffeed4;
+    border-radius: 0;
+    border: 1.5px solid #0a0a0a;
+  }
+  .palette-J .demo-ask .prompt { color: rgba(255,238,212,0.7); }
+  .palette-J .demo-ask .prompt strong { color: #ffeed4; }
+  .palette-J .demo-ask .kbd { background: rgba(255,238,212,0.16); color: #ffeed4; border-radius: 0; }
+  .palette-J .demo-ask .ask-go { background: #c01a1a; color: #ffeed4; border-radius: 0; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="index-head">
+    <h1>+ 3 alternativas (H · I · J)</h1>
+    <p>Riso fanzine vs Mocha atelier vs Newspaper editorial. Mesma estrutura de briefing (hero · stats · "precisa de ti" · tarefa · ask bar) aplicada a três personalidades distintas.</p>
+  </div>
+
+  <!-- ============================================================
+       H · RISO PRINT
+       ============================================================ -->
+  <div class="demo">
+    <div class="demo-bar">
+      <span class="demo-tag">H</span>
+      <span class="demo-name">Riso Print</span>
+      <div class="demo-swatches">
+        <div class="demo-sw" style="background:#ff3d8b"></div>
+        <div class="demo-sw" style="background:#2a4cfb"></div>
+        <div class="demo-sw" style="background:#fde047"></div>
+        <div class="demo-sw" style="background:#1a0e08"></div>
+        <div class="demo-sw" style="background:#fef8e8"></div>
+      </div>
+      <div class="demo-desc">Risograph fanzine. Fluo pink/azul/amarelo + halftone, shadows offset, highlights amarelo no texto.</div>
+    </div>
+
+    <div class="demo-body palette-H">
+      <div class="demo-hero">
+        <div class="demo-date">Segunda · 25 Mai 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="demo-lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div class="demo-stats">
+        <div class="demo-stat s1"><span class="num">0</span><span class="lbl"><strong>Urgentes</strong>nada urgente</span></div>
+        <div class="demo-stat s2"><span class="num">2</span><span class="lbl"><strong>Hoje</strong>precisam de ti</span></div>
+        <div class="demo-stat s3"><span class="num">4</span><span class="lbl"><strong>Semana</strong>podem esperar</span></div>
+        <div class="demo-stat s4"><span class="num">17</span><span class="lbl"><strong>Tratei</strong>arquivado</span></div>
+      </div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#ff3d8b"></div>
+        <h3>O que precisa de ti</h3>
+        <div class="demo-sec-meta">2 itens · ~7 min</div>
+      </div>
+
+      <div class="demo-card urgent">
+        <div class="demo-card-body">
+          <div class="demo-card-meta">
+            <span class="demo-badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span class="addr">info@info.nos.pt</span>
+            <span class="time">23 Mai · 14:02</span>
+          </div>
+          <h4>Não recebemos o pagamento da fatura NOS</h4>
+          <p class="demo-card-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>. Possível débito directo falhado — confirma com banco.</p>
+          <div class="demo-card-actions">
+            <button class="demo-btn demo-btn-pink">Pagar agora</button>
+            <button class="demo-btn">Lembrete 27 Mai</button>
+            <button class="demo-btn">Ignorar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#2a4cfb"></div>
+        <h3>O que eu proponho</h3>
+        <div class="demo-sec-meta">1 tarefa</div>
+      </div>
+
+      <div class="demo-task">
+        <div class="demo-task-check"></div>
+        <div style="flex:1">
+          <div class="demo-task-text">Responder ao Lutz sobre certificate monitoring</div>
+          <div class="demo-task-meta">sugestão: hoje à tarde</div>
+        </div>
+        <button class="demo-btn demo-btn-blue">Aceitar</button>
+      </div>
+
+      <div class="demo-ask">
+        <span class="prompt"><strong>Pergunta algo</strong> — "o que recebi do banco esta semana?"</span>
+        <span class="kbd">⌘ K</span>
+        <button class="ask-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 3l5 5-5 5"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       I · MOCHA ATELIER
+       ============================================================ -->
+  <div class="demo">
+    <div class="demo-bar">
+      <span class="demo-tag">I</span>
+      <span class="demo-name">Mocha Atelier</span>
+      <div class="demo-swatches">
+        <div class="demo-sw" style="background:#6f513f"></div>
+        <div class="demo-sw" style="background:#b8473f"></div>
+        <div class="demo-sw" style="background:#c8843e"></div>
+        <div class="demo-sw" style="background:#6a7855"></div>
+        <div class="demo-sw" style="background:#f6f0e9"></div>
+      </div>
+      <div class="demo-desc">Pantone 2025 + terra refinada. Mocha brown, rust, ochre, sage. Aesop / Loewe vibes.</div>
+    </div>
+
+    <div class="demo-body palette-I">
+      <div class="demo-hero">
+        <div class="demo-date">Segunda · 25 Mai 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="demo-lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div class="demo-stats">
+        <div class="demo-stat s1"><span class="num">0</span><span class="lbl"><strong>Urgentes</strong>nada urgente</span></div>
+        <div class="demo-stat s2"><span class="num">2</span><span class="lbl"><strong>Hoje</strong>precisam de ti</span></div>
+        <div class="demo-stat s3"><span class="num">4</span><span class="lbl"><strong>Semana</strong>podem esperar</span></div>
+        <div class="demo-stat s4"><span class="num">17</span><span class="lbl"><strong>Tratei</strong>arquivado</span></div>
+      </div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#b8473f"></div>
+        <h3>O que precisa de ti</h3>
+        <div class="demo-sec-meta">2 itens · ~7 min</div>
+      </div>
+
+      <div class="demo-card urgent">
+        <div class="demo-card-body">
+          <div class="demo-card-meta">
+            <span class="demo-badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span class="addr">info@info.nos.pt</span>
+            <span class="time">23 Mai · 14:02</span>
+          </div>
+          <h4>Não recebemos o pagamento da fatura NOS</h4>
+          <p class="demo-card-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>. Possível débito directo falhado — confirma com banco.</p>
+          <div class="demo-card-actions">
+            <button class="demo-btn demo-btn-rust">Pagar agora</button>
+            <button class="demo-btn">Lembrete 27 Mai</button>
+            <button class="demo-btn">Ignorar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#c8843e"></div>
+        <h3>O que eu proponho</h3>
+        <div class="demo-sec-meta">1 tarefa</div>
+      </div>
+
+      <div class="demo-task">
+        <div class="demo-task-check"></div>
+        <div style="flex:1">
+          <div class="demo-task-text">Responder ao Lutz sobre certificate monitoring</div>
+          <div class="demo-task-meta">sugestão: hoje à tarde</div>
+        </div>
+        <button class="demo-btn demo-btn-mocha">Aceitar</button>
+      </div>
+
+      <div class="demo-ask">
+        <span class="prompt"><strong>Pergunta algo</strong> — "o que recebi do banco esta semana?"</span>
+        <span class="kbd">⌘ K</span>
+        <button class="ask-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 3l5 5-5 5"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       J · PERIÓDICO
+       ============================================================ -->
+  <div class="demo">
+    <div class="demo-bar">
+      <span class="demo-tag">J</span>
+      <span class="demo-name">Periódico</span>
+      <div class="demo-swatches">
+        <div class="demo-sw" style="background:#c01a1a"></div>
+        <div class="demo-sw" style="background:#1a3a7c"></div>
+        <div class="demo-sw" style="background:#c08c2a"></div>
+        <div class="demo-sw" style="background:#0a0a0a"></div>
+        <div class="demo-sw" style="background:#ffeed4"></div>
+      </div>
+      <div class="demo-desc">Newspaper editorial. Papel rosa FT, tinta preta, accents red/navy. Sem rounding, rules grossas.</div>
+    </div>
+
+    <div class="demo-body palette-J">
+      <div class="demo-hero">
+        <div class="demo-date">Segunda · 25 Mai 2026 · briefing matinal</div>
+        <h2>Bom <em>dia</em>, Tiago.</h2>
+        <p class="demo-lede">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti</strong>, 4 podem esperar. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-stats">
+        <div class="demo-stat s1"><span class="num">0</span><span class="lbl"><strong>Urgentes</strong>nada urgente</span></div>
+        <div class="demo-stat s2"><span class="num">2</span><span class="lbl"><strong>Hoje</strong>precisam de ti</span></div>
+        <div class="demo-stat s3"><span class="num">4</span><span class="lbl"><strong>Semana</strong>podem esperar</span></div>
+        <div class="demo-stat s4"><span class="num">17</span><span class="lbl"><strong>Tratei</strong>arquivado</span></div>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#c01a1a"></div>
+        <h3>O que precisa de ti</h3>
+        <div class="demo-sec-meta">2 itens · ~7 min</div>
+      </div>
+
+      <div class="demo-card urgent">
+        <div class="demo-card-body">
+          <div class="demo-card-meta">
+            <span class="demo-badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span class="addr">info@info.nos.pt</span>
+            <span class="time">23 Mai · 14:02</span>
+          </div>
+          <h4>Não recebemos o pagamento da fatura NOS</h4>
+          <p class="demo-card-summary">A NOS diz que a fatura de <strong>€67.40</strong> não foi paga. Prazo: <strong>28 Mai</strong>. Possível débito directo falhado — confirma com banco.</p>
+          <div class="demo-card-actions">
+            <button class="demo-btn demo-btn-red">Pagar agora</button>
+            <button class="demo-btn">Lembrete 27 Mai</button>
+            <button class="demo-btn">Ignorar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px"></div>
+
+      <div class="demo-sec-head">
+        <div class="demo-sec-dot" style="background:#c08c2a"></div>
+        <h3>O que eu proponho</h3>
+        <div class="demo-sec-meta">1 tarefa</div>
+      </div>
+
+      <div class="demo-task">
+        <div class="demo-task-check"></div>
+        <div style="flex:1">
+          <div class="demo-task-text">Responder ao Lutz sobre certificate monitoring</div>
+          <div class="demo-task-meta">sugestão: hoje à tarde</div>
+        </div>
+        <button class="demo-btn demo-btn-navy">Aceitar</button>
+      </div>
+
+      <div class="demo-ask">
+        <span class="prompt"><strong>Pergunta algo</strong> — "o que recebi do banco esta semana?"</span>
+        <span class="kbd">⌘ K</span>
+        <button class="ask-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 3l5 5-5 5"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

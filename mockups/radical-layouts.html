@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — Radical Layouts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Using Palette A (Ink & Saffron) as base — same tokens as before */
+  :root {
+    --bg:      #f1ede4;
+    --bg2:     #faf7f0;
+    --bg3:     #e6e0d2;
+    --bg4:     #efe9dc;
+    --border:  rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --border3: rgba(0,0,0,0.30);
+    --text:    #14110d;
+    --text2:   #4a4540;
+    --text3:   #7a7068;
+    --accent:    #b8821b;
+    --accent-on: #fffaf0;
+    --urgent: #a52a1a;
+    --today:  #b8821b;
+    --week:   #4d6b3e;
+    --fyi:    #6e6a64;
+    --urgent-bg: rgba(165,42,26,0.10);
+    --today-bg:  rgba(184,130,27,0.13);
+    --week-bg:   rgba(77,107,62,0.12);
+    --fyi-bg:    rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    font-weight: 450;
+  }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ============================================================
+     Top chrome — paradigm switcher
+     ============================================================ */
+  .chrome {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .chrome-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.015em;
+  }
+  .chrome-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    margin-right: auto;
+  }
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg3);
+    padding: 4px;
+    border-radius: 8px;
+  }
+  .tab {
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    border-radius: 5px;
+    transition: background 0.1s, color 0.1s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--bg2);
+    color: var(--text);
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  /* ============================================================
+     Stage — holds one paradigm view at a time
+     ============================================================ */
+  .stage {
+    min-height: calc(100vh - 60px);
+  }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ============================================================
+     Shared atoms — badges, buttons, pills
+     ============================================================ */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 3px;
+    line-height: 1;
+  }
+  .badge.urgent { color: var(--urgent); background: var(--urgent-bg); }
+  .badge.today  { color: var(--today);  background: var(--today-bg); }
+  .badge.week   { color: var(--week);   background: var(--week-bg); }
+  .badge.fyi    { color: var(--fyi);    background: var(--fyi-bg); }
+
+  .ai-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 7px;
+  }
+
+  .btn {
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 6px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    transition: background 0.08s, color 0.08s, border-color 0.08s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover { background: var(--bg3); color: var(--text); border-color: var(--border3); }
+  .btn-primary { background: var(--text); color: var(--bg2); border-color: var(--text); }
+  .btn-primary:hover { background: #2d2b27; color: var(--bg2); border-color: #2d2b27; }
+  .btn-accent { background: var(--accent); color: var(--accent-on); border-color: var(--accent); }
+  .btn-accent:hover { background: #a37315; border-color: #a37315; color: var(--accent-on); }
+
+  .pill {
+    height: 28px;
+    padding: 0 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.08s, color 0.08s, border-color 0.08s;
+  }
+  .pill:hover { background: var(--bg3); color: var(--text); border-color: var(--border3); }
+
+  .kbd {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 5px;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    color: var(--text2);
+    background: var(--bg);
+  }
+
+  /* ============================================================
+     ─────────── VIEW 1: BRIEFING ───────────
+     ============================================================ */
+  .briefing {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 32px 80px;
+  }
+  .briefing-hero {
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 36px;
+  }
+  .briefing-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 14px;
+  }
+  .briefing-headline {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    color: var(--text);
+    margin: 0 0 18px;
+  }
+  .briefing-tldr {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text2);
+    max-width: 60ch;
+  }
+  .briefing-tldr strong { color: var(--text); font-weight: 600; }
+
+  .briefing-section {
+    margin-bottom: 48px;
+  }
+  .briefing-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .briefing-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .briefing-section-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+  }
+
+  .briefing-card {
+    padding: 22px 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    transition: border-color 0.08s, background 0.08s;
+  }
+  .briefing-card:hover {
+    border-color: var(--border3);
+  }
+  .briefing-card.priority-today { border-left: 3px solid var(--today); }
+  .briefing-card.priority-urgent { border-left: 3px solid var(--urgent); }
+  .briefing-card.priority-week { border-left: 3px solid var(--week); }
+
+  .briefing-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .briefing-card-meta .sender { color: var(--text); font-weight: 500; font-family: 'Syne', sans-serif; }
+  .briefing-card-subject {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin: 0 0 12px;
+  }
+  .briefing-card-summary {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text2);
+    margin: 0 0 16px;
+    max-width: 56ch;
+  }
+  .briefing-card-summary strong { color: var(--text); }
+  .briefing-card-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .briefing-handled {
+    background: var(--bg);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .handled-row {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .handled-row:last-child { border-bottom: none; }
+  .handled-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .handled-text { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .handled-text strong { font-weight: 600; }
+  .handled-action {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+  }
+
+  .briefing-task {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .briefing-task-check {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .briefing-task-body {
+    flex: 1;
+  }
+  .briefing-task-text {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+  .briefing-task-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+  }
+
+  .briefing-event {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .briefing-event-date {
+    text-align: center;
+  }
+  .briefing-event-day {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .briefing-event-month {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+  .briefing-event-info { font-size: 14px; color: var(--text); }
+  .briefing-event-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 3px;
+  }
+
+  /* ============================================================
+     ─────────── VIEW 2: TRIAGE ───────────
+     ============================================================ */
+  .triage-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 60px);
+    padding: 24px 32px 48px;
+  }
+  .triage-progress {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+  .triage-progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .triage-progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .triage-progress-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .triage-progress-bar {
+    height: 3px;
+    background: var(--bg3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .triage-progress-fill {
+    height: 100%;
+    width: 33%;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+
+  .triage-card {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px 44px;
+    margin-bottom: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .triage-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 18px;
+  }
+  .triage-meta .sender { color: var(--text); font-weight: 500; font-family: 'Syne', sans-serif; }
+  .triage-meta .sep { color: var(--text3); }
+  .triage-subject {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 38px;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    color: var(--text);
+    margin: 0 0 18px;
+  }
+  .triage-badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .triage-summary {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 60ch;
+    margin: 0 0 22px;
+  }
+  .triage-summary strong { font-weight: 600; }
+  .triage-summary .muted { color: var(--text2); }
+  .triage-extracted {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 28px;
+  }
+  .triage-extracted-row {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .triage-extracted-row:last-child { border-bottom: none; }
+  .triage-extracted-row:first-child { padding-top: 0; }
+  .triage-extracted-row:last-child { padding-bottom: 0; }
+  .triage-extracted-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    min-width: 80px;
+  }
+  .triage-extracted-text { font-size: 13.5px; color: var(--text); flex: 1; }
+
+  .triage-actions {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .triage-big-btn {
+    height: 56px;
+    border-radius: 10px;
+    border: 1px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.08s, color 0.08s, border-color 0.08s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .triage-big-btn:hover { background: var(--bg3); border-color: var(--border3); }
+  .triage-big-btn.reply { background: var(--text); color: var(--bg2); border-color: var(--text); }
+  .triage-big-btn.reply:hover { background: #2d2b27; color: var(--bg2); }
+  .triage-big-btn .triage-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .triage-keybar {
+    max-width: 720px;
+    margin: 24px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .triage-keybar span { display: inline-flex; align-items: center; gap: 5px; }
+
+  /* ============================================================
+     ─────────── VIEW 3: CONVERSATION ───────────
+     ============================================================ */
+  .convo-shell {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    height: calc(100vh - 60px);
+    background: var(--bg);
+  }
+  @media (max-width: 1100px) {
+    .convo-shell { grid-template-columns: 1fr; }
+    .convo-side { display: none; }
+  }
+  .convo-main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .convo-thread {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 60px 20px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .convo-bubble {
+    margin-bottom: 22px;
+  }
+  .convo-bubble.assistant .convo-from {
+    color: var(--accent);
+  }
+  .convo-from {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .convo-text {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--text);
+    max-width: 62ch;
+  }
+  .convo-text strong { font-weight: 600; }
+  .convo-text .muted { color: var(--text2); }
+  .convo-bubble.user {
+    text-align: right;
+  }
+  .convo-bubble.user .convo-text {
+    background: var(--text);
+    color: var(--bg2);
+    padding: 10px 16px;
+    border-radius: 14px 14px 4px 14px;
+    display: inline-block;
+    font-size: 14.5px;
+    max-width: none;
+  }
+  .convo-bubble.user .convo-from { color: var(--text3); }
+
+  .convo-card-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    max-width: 60ch;
+  }
+  .convo-card {
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    background: var(--bg2);
+    padding: 18px 20px;
+    transition: border-color 0.08s;
+  }
+  .convo-card:hover { border-color: var(--border3); }
+  .convo-card.urgent { border-left: 3px solid var(--urgent); }
+  .convo-card.today  { border-left: 3px solid var(--today); }
+  .convo-card-from {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+  .convo-card-from .sender { color: var(--text); font-weight: 500; font-family: 'Syne', sans-serif; }
+  .convo-card-subject {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+  .convo-card-summary {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin: 0 0 12px;
+  }
+  .convo-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .convo-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .convo-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Syne', sans-serif;
+  }
+  .convo-chip:hover { background: var(--accent); color: var(--accent-on); border-color: var(--accent); }
+
+  .convo-input-wrap {
+    border-top: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 18px 60px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .convo-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 4px 4px 4px 18px;
+    transition: border-color 0.08s;
+  }
+  .convo-input-row:focus-within { border-color: var(--text2); }
+  .convo-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    padding: 12px 0;
+    outline: none;
+  }
+  .convo-input::placeholder { color: var(--text3); }
+  .convo-send {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--text);
+    color: var(--bg2);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .convo-side {
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    padding: 24px 22px;
+    overflow-y: auto;
+  }
+  .convo-side-section { margin-bottom: 28px; }
+  .convo-side-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .convo-side-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text);
+  }
+  .convo-side-row:last-child { border-bottom: none; }
+  .convo-side-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .convo-side-count {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  /* ============================================================
+     ─────────── VIEW 4: TODAY CANVAS ───────────
+     ============================================================ */
+  .canvas-shell {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    height: calc(100vh - 60px);
+  }
+  @media (max-width: 1100px) {
+    .canvas-shell { grid-template-columns: 1fr; }
+    .canvas-side { display: none; }
+  }
+  .canvas-main {
+    padding: 36px 44px;
+    overflow-y: auto;
+  }
+  .canvas-head {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .canvas-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .canvas-title {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 40px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 12px;
+  }
+  .canvas-subtitle {
+    font-size: 14.5px;
+    color: var(--text2);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .canvas-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    position: relative;
+  }
+  .canvas-hour {
+    padding: 18px 16px 18px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    border-top: 1px solid var(--border);
+    text-align: right;
+  }
+  .canvas-slot {
+    border-top: 1px solid var(--border);
+    padding: 10px 0 10px 16px;
+    min-height: 60px;
+    border-left: 1px solid var(--border);
+    position: relative;
+  }
+  .canvas-slot:first-of-type { padding-top: 14px; }
+  .canvas-slot.now::before {
+    content: 'agora';
+    position: absolute;
+    left: -10px;
+    top: -7px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--bg);
+    padding: 1px 4px;
+  }
+  .canvas-slot.now {
+    border-top: 1.5px solid var(--accent);
+  }
+
+  .canvas-block {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text);
+    cursor: grab;
+    transition: border-color 0.08s, background 0.08s;
+  }
+  .canvas-block:hover { border-color: var(--border3); background: var(--bg3); }
+  .canvas-block-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .canvas-block-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .canvas-block.event   { border-left: 3px solid var(--accent); }
+  .canvas-block.task    { border-left: 3px solid var(--today); }
+  .canvas-block.followup { border-left: 3px solid var(--urgent); }
+
+  .canvas-side {
+    border-left: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 24px 22px;
+    overflow-y: auto;
+  }
+  .canvas-side-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .canvas-side-label .count { color: var(--text2); font-size: 11px; letter-spacing: 0.04em; }
+
+  .canvas-suggest {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    cursor: grab;
+  }
+  .canvas-suggest-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .canvas-suggest-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .canvas-suggest-slot {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <div class="chrome-title">Mail Digest — Radical Layouts</div>
+  <div class="chrome-desc">4 paradigmas alternativos · paleta A · ink &amp; saffron</div>
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-view="briefing" role="tab">1 · Briefing</button>
+    <button class="tab" data-view="triage" role="tab">2 · Triage</button>
+    <button class="tab" data-view="conversation" role="tab">3 · Conversation</button>
+    <button class="tab" data-view="canvas" role="tab">4 · Today Canvas</button>
+  </div>
+</div>
+
+<div class="stage">
+
+  <!-- ============================================================
+       VIEW 1: BRIEFING
+       ============================================================ -->
+  <section class="view active" id="view-briefing">
+    <div class="briefing">
+
+      <div class="briefing-hero">
+        <div class="briefing-date">Segunda · 25 Maio 2026 · briefing matinal</div>
+        <h1 class="briefing-headline">Bom dia, Tiago.</h1>
+        <p class="briefing-tldr">Li <strong>23 emails</strong> desde ontem. <strong>2 precisam de ti hoje</strong>, <strong>4 podem esperar</strong>. O resto eram newsletters e notificações que arquivei. Estimei <strong>11 minutos</strong> para ficares em dia.</p>
+      </div>
+
+      <div class="briefing-section">
+        <div class="briefing-section-head">
+          <div class="briefing-section-title">O que precisa de ti</div>
+          <div class="briefing-section-count">2 itens · ~7 min</div>
+        </div>
+
+        <div class="briefing-card priority-today">
+          <div class="briefing-card-meta">
+            <span class="badge today">Hoje</span>
+            <span class="sender">NOS</span>
+            <span>·</span>
+            <span>info@info.nos.pt</span>
+            <span>·</span>
+            <span>23 Mai · 14:02</span>
+          </div>
+          <h2 class="briefing-card-subject">Não recebemos o pagamento da fatura NOS</h2>
+          <p class="briefing-card-summary">
+            A NOS diz que a fatura de Maio (<strong>€67.40</strong>) não foi paga. Prazo para evitar suspensão: <strong>28 Mai</strong>. Possível débito directo falhado — vale a pena confirmar com o banco antes de pagar manualmente.
+          </p>
+          <div class="briefing-card-actions">
+            <button class="btn btn-accent">Pagar agora</button>
+            <button class="btn">Adicionar ao calendário · 28 Mai</button>
+            <button class="btn">Ver no Gmail</button>
+            <button class="btn">Ignorar</button>
+          </div>
+        </div>
+
+        <div class="briefing-card priority-week">
+          <div class="briefing-card-meta">
+            <span class="badge week">Semana</span>
+            <span class="sender">Lutz Mader</span>
+            <span>·</span>
+            <span>via This is Reliable</span>
+            <span>·</span>
+            <span>23 Mai · 09:18</span>
+          </div>
+          <h2 class="briefing-card-subject">Re: certificate monitoring</h2>
+          <p class="briefing-card-summary">
+            O Lutz responde à thread sobre monitorização de certificados SSL. Pergunta se queres avançar com a integração proposta ou se preferes a abordagem mais simples (cron + openssl). <strong>Aguarda resposta tua para fechar a proposta esta semana.</strong>
+          </p>
+          <div class="briefing-card-actions">
+            <button class="btn btn-primary">Ver rascunho sugerido</button>
+            <button class="btn">Ver no Gmail</button>
+            <button class="btn">Marcar para amanhã</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="briefing-section">
+        <div class="briefing-section-head">
+          <div class="briefing-section-title">O que eu proponho</div>
+          <div class="briefing-section-count">3 itens</div>
+        </div>
+
+        <div class="briefing-event">
+          <div class="briefing-event-date">
+            <div class="briefing-event-day">28</div>
+            <div class="briefing-event-month">Mai</div>
+          </div>
+          <div>
+            <div class="briefing-event-info"><strong>Pagar fatura NOS</strong></div>
+            <div class="briefing-event-meta">extraído de email · sugestão: 09:00 · lembrete 1 dia antes</div>
+          </div>
+          <button class="btn">Adicionar</button>
+        </div>
+
+        <div class="briefing-task">
+          <div class="briefing-task-check"></div>
+          <div class="briefing-task-body">
+            <div class="briefing-task-text">Responder ao Lutz sobre approach de certificate monitoring</div>
+            <div class="briefing-task-meta">do email "Re: certificate monitoring" · sugestão: hoje à tarde</div>
+          </div>
+          <button class="btn">Aceitar</button>
+        </div>
+
+        <div class="briefing-task">
+          <div class="briefing-task-check"></div>
+          <div class="briefing-task-body">
+            <div class="briefing-task-text">Confirmar com banco se débito directo da NOS falhou</div>
+            <div class="briefing-task-meta">do email "Não recebemos o pagamento" · sugestão: hoje</div>
+          </div>
+          <button class="btn">Aceitar</button>
+        </div>
+      </div>
+
+      <div class="briefing-section">
+        <div class="briefing-section-head">
+          <div class="briefing-section-title">O que eu tratei</div>
+          <div class="briefing-section-count">17 itens · arquivados</div>
+        </div>
+
+        <div class="briefing-handled">
+          <div class="handled-row">
+            <div class="handled-cat">Newsletter</div>
+            <div class="handled-text"><strong>Chez Vous</strong> — eventos em Paris no domingo</div>
+            <div class="handled-action">arquivado</div>
+          </div>
+          <div class="handled-row">
+            <div class="handled-cat">Newsletter</div>
+            <div class="handled-text"><strong>Medium Daily Digest</strong> — Andrej Karpathy joins Anthropic</div>
+            <div class="handled-action">arquivado</div>
+          </div>
+          <div class="handled-row">
+            <div class="handled-cat">Promoção</div>
+            <div class="handled-text"><strong>Uber</strong> — last chance, deals won't wait</div>
+            <div class="handled-action">arquivado</div>
+          </div>
+          <div class="handled-row">
+            <div class="handled-cat">Promoção</div>
+            <div class="handled-text"><strong>Team Meridian</strong> — 25% off everything</div>
+            <div class="handled-action">arquivado</div>
+          </div>
+          <div class="handled-row">
+            <div class="handled-cat">Job alert</div>
+            <div class="handled-text"><strong>LinkedIn</strong> — 8 novas vagas que correspondem ao teu perfil</div>
+            <div class="handled-action">arquivado</div>
+          </div>
+          <div class="handled-row">
+            <div class="handled-cat">Newsletter</div>
+            <div class="handled-text"><strong>Ultimate Guitar</strong> — finish to tab Inside Out by Gun</div>
+            <div class="handled-action">arquivado</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 2: TRIAGE
+       ============================================================ -->
+  <section class="view" id="view-triage">
+    <div class="triage-shell">
+
+      <div class="triage-progress">
+        <div class="triage-progress-row">
+          <div class="triage-progress-label">Screener · matinal</div>
+          <div class="triage-progress-count">2 de 6</div>
+        </div>
+        <div class="triage-progress-bar"><div class="triage-progress-fill"></div></div>
+      </div>
+
+      <div class="triage-card">
+        <div class="triage-meta">
+          <span class="sender">NOS</span>
+          <span>info@info.nos.pt</span>
+          <span class="sep">·</span>
+          <span>23 Mai 2026 · 14:02</span>
+        </div>
+
+        <h1 class="triage-subject">Não recebemos o pagamento da fatura NOS</h1>
+
+        <div class="triage-badges">
+          <span class="badge today">Hoje</span>
+          <span class="ai-tag">via claude · sonnet 4.6</span>
+        </div>
+
+        <p class="triage-summary">
+          A NOS informa que <strong>a fatura de Maio (€67.40) não foi paga</strong>. Indicam <strong>28 de Maio</strong> como prazo para evitar suspensão do serviço. <span class="muted">É provável que o débito directo tenha falhado por saldo insuficiente — vale a pena confirmar com o banco antes de pagar manualmente.</span>
+        </p>
+
+        <div class="triage-extracted">
+          <div class="triage-extracted-row">
+            <div class="triage-extracted-label">Valor</div>
+            <div class="triage-extracted-text">€67.40</div>
+          </div>
+          <div class="triage-extracted-row">
+            <div class="triage-extracted-label">Prazo</div>
+            <div class="triage-extracted-text">28 Mai 2026 (3 dias)</div>
+          </div>
+          <div class="triage-extracted-row">
+            <div class="triage-extracted-label">Acção</div>
+            <div class="triage-extracted-text">Pagar via área de cliente NOS ou MB Way</div>
+          </div>
+        </div>
+
+        <p class="triage-summary" style="margin-bottom: 0; font-size: 13.5px; color: var(--text2);">
+          <strong style="color: var(--text)">Não precisas de responder.</strong> A acção é pagar e adicionar lembrete.
+        </p>
+      </div>
+
+      <div class="triage-actions">
+        <button class="triage-big-btn reply">
+          <span>Resolver agora</span>
+          <span class="triage-key">R</span>
+        </button>
+        <button class="triage-big-btn">
+          <span>Agendar (28 Mai)</span>
+          <span class="triage-key">S</span>
+        </button>
+        <button class="triage-big-btn">
+          <span>Arquivar</span>
+          <span class="triage-key">A</span>
+        </button>
+      </div>
+
+      <div class="triage-keybar">
+        <span><span class="kbd">J</span> próximo</span>
+        <span><span class="kbd">K</span> anterior</span>
+        <span><span class="kbd">D</span> rascunho</span>
+        <span><span class="kbd">U</span> desfazer</span>
+        <span><span class="kbd">?</span> ajuda</span>
+        <span style="margin-left:auto">Ficam <strong style="color:var(--text)">4 emails</strong> · ~3 min para limpar</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 3: CONVERSATION
+       ============================================================ -->
+  <section class="view" id="view-conversation">
+    <div class="convo-shell">
+
+      <div class="convo-main">
+        <div class="convo-thread">
+
+          <div class="convo-bubble assistant">
+            <div class="convo-from">Mail Digest · 08:00</div>
+            <div class="convo-text">
+              Bom dia, Tiago. Acabei de ler <strong>23 emails</strong> desde ontem às 19:00. <strong>2 precisam de ti hoje</strong>, <strong>4 podem esperar até ao fim da semana</strong>, e os restantes 17 eram ruído (newsletters, promoções, alertas LinkedIn) — já arquivei.
+              <br><br>
+              Queres que te mostre os 2 prioritários, ou queres ver tudo de uma vez?
+            </div>
+            <div class="convo-chips">
+              <button class="convo-chip">Mostra os 2 prioritários</button>
+              <button class="convo-chip">Quero ver tudo</button>
+              <button class="convo-chip">Resumo executivo de 1 frase</button>
+            </div>
+          </div>
+
+          <div class="convo-bubble user">
+            <div class="convo-from">Tu · 08:01</div>
+            <div class="convo-text">Mostra os 2 prioritários</div>
+          </div>
+
+          <div class="convo-bubble assistant">
+            <div class="convo-from">Mail Digest · 08:01</div>
+            <div class="convo-text">Aqui estão. O primeiro é o mais urgente — tens 3 dias para pagar.</div>
+            <div class="convo-card-stack">
+              <div class="convo-card today">
+                <div class="convo-card-from"><span class="sender">NOS</span> · 23 Mai · 14:02</div>
+                <h3 class="convo-card-subject">Não recebemos o pagamento da fatura NOS</h3>
+                <p class="convo-card-summary">€67.40 · prazo 28 Mai · serviço suspende se não pagares</p>
+                <div class="convo-card-actions">
+                  <button class="btn btn-accent">Pagar agora</button>
+                  <button class="btn">Lembrete 27 Mai</button>
+                  <button class="btn">Ver email</button>
+                </div>
+              </div>
+              <div class="convo-card today">
+                <div class="convo-card-from"><span class="sender">Lutz Mader</span> · via This is Reliable · 23 Mai</div>
+                <h3 class="convo-card-subject">Re: certificate monitoring</h3>
+                <p class="convo-card-summary">Pergunta se queres avançar com integração ou abordagem simples (cron + openssl). Espera resposta esta semana.</p>
+                <div class="convo-card-actions">
+                  <button class="btn btn-primary">Ver rascunho que escrevi</button>
+                  <button class="btn">Marcar amanhã</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="convo-bubble assistant">
+            <div class="convo-from">Mail Digest · 08:01</div>
+            <div class="convo-text">
+              <span class="muted">Posso também:</span>
+            </div>
+            <div class="convo-chips">
+              <button class="convo-chip">Mostra os 4 que podem esperar</button>
+              <button class="convo-chip">Lista os 17 que arquivei</button>
+              <button class="convo-chip">Mostra calendário sugerido</button>
+              <button class="convo-chip">Ler-me em voz alta</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="convo-input-wrap">
+          <div class="convo-input-row">
+            <input class="convo-input" placeholder="Pergunta algo ao Mail Digest — ex: 'O que recebi do banco esta semana?'" />
+            <button class="convo-send" title="Enviar">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="convo-side">
+        <div class="convo-side-section">
+          <div class="convo-side-label">Hoje</div>
+          <div class="convo-side-row">
+            <span class="convo-side-dot" style="background:var(--urgent)"></span>
+            <span>Urgentes</span>
+            <span class="convo-side-count">0</span>
+          </div>
+          <div class="convo-side-row">
+            <span class="convo-side-dot" style="background:var(--today)"></span>
+            <span>Para hoje</span>
+            <span class="convo-side-count">2</span>
+          </div>
+          <div class="convo-side-row">
+            <span class="convo-side-dot" style="background:var(--week)"></span>
+            <span>Esta semana</span>
+            <span class="convo-side-count">4</span>
+          </div>
+          <div class="convo-side-row">
+            <span class="convo-side-dot" style="background:var(--fyi)"></span>
+            <span>Arquivado</span>
+            <span class="convo-side-count">17</span>
+          </div>
+        </div>
+
+        <div class="convo-side-section">
+          <div class="convo-side-label">Ferramentas</div>
+          <div class="convo-side-row">📅 Calendário sugerido</div>
+          <div class="convo-side-row">📝 Rascunhos (1)</div>
+          <div class="convo-side-row">⏰ Follow-ups pendentes (3)</div>
+          <div class="convo-side-row">📥 Inbox completa</div>
+        </div>
+
+        <div class="convo-side-section">
+          <div class="convo-side-label">Conversas anteriores</div>
+          <div class="convo-side-row" style="font-size:11.5px; color:var(--text2)">Briefing de 24 Mai</div>
+          <div class="convo-side-row" style="font-size:11.5px; color:var(--text2)">Briefing de 23 Mai</div>
+          <div class="convo-side-row" style="font-size:11.5px; color:var(--text2)">Briefing de 22 Mai</div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW 4: TODAY CANVAS
+       ============================================================ -->
+  <section class="view" id="view-canvas">
+    <div class="canvas-shell">
+
+      <div class="canvas-main">
+        <div class="canvas-head">
+          <div class="canvas-date">Segunda · 25 Maio 2026</div>
+          <h1 class="canvas-title">O teu dia</h1>
+          <p class="canvas-subtitle">
+            Coloquei <strong>2 tarefas</strong>, <strong>1 evento</strong> e <strong>1 follow-up</strong> derivados dos teus emails de ontem. Arrasta para mover ou clica para ver o email original.
+          </p>
+        </div>
+
+        <div class="canvas-grid">
+
+          <div class="canvas-hour">08:00</div>
+          <div class="canvas-slot">
+            <div class="canvas-block task">
+              <div class="canvas-block-meta"><span class="dot" style="background:var(--today)"></span> Tarefa · de email NOS</div>
+              Confirmar com banco se débito directo falhou
+            </div>
+          </div>
+
+          <div class="canvas-hour">09:00</div>
+          <div class="canvas-slot">
+            <div class="canvas-block event">
+              <div class="canvas-block-meta"><span class="dot" style="background:var(--accent)"></span> Evento · 09:30–10:00</div>
+              Daily standup
+            </div>
+          </div>
+
+          <div class="canvas-hour">10:00</div>
+          <div class="canvas-slot"></div>
+
+          <div class="canvas-hour">11:00</div>
+          <div class="canvas-slot now">
+            <div class="canvas-block followup">
+              <div class="canvas-block-meta"><span class="dot" style="background:var(--urgent)"></span> Follow-up · 3 dias sem resposta</div>
+              Re-pingar Cláudia sobre proposta de design system
+            </div>
+          </div>
+
+          <div class="canvas-hour">12:00</div>
+          <div class="canvas-slot"></div>
+
+          <div class="canvas-hour">14:00</div>
+          <div class="canvas-slot">
+            <div class="canvas-block task">
+              <div class="canvas-block-meta"><span class="dot" style="background:var(--today)"></span> Tarefa · de email Lutz</div>
+              Responder ao Lutz sobre certificate monitoring
+            </div>
+          </div>
+
+          <div class="canvas-hour">15:00</div>
+          <div class="canvas-slot"></div>
+
+          <div class="canvas-hour">16:00</div>
+          <div class="canvas-slot"></div>
+
+          <div class="canvas-hour">18:00</div>
+          <div class="canvas-slot"></div>
+
+        </div>
+      </div>
+
+      <aside class="canvas-side">
+        <div class="canvas-side-label">Sugestões por agendar <span class="count">3</span></div>
+
+        <div class="canvas-suggest">
+          <div class="canvas-suggest-meta">Pagamento · NOS</div>
+          <div class="canvas-suggest-text">Pagar fatura NOS €67.40</div>
+          <div class="canvas-suggest-slot">→ sugestão: 28 Mai · 09:00</div>
+        </div>
+
+        <div class="canvas-suggest">
+          <div class="canvas-suggest-meta">Reunião · Lutz Mader</div>
+          <div class="canvas-suggest-text">Discussão sobre certificate monitoring</div>
+          <div class="canvas-suggest-slot">→ sugestão: 27 Mai · 11:00</div>
+        </div>
+
+        <div class="canvas-suggest">
+          <div class="canvas-suggest-meta">Follow-up · proposta</div>
+          <div class="canvas-suggest-text">Re-enviar proposta para a Maria</div>
+          <div class="canvas-suggest-slot">→ sugestão: amanhã · 15:00</div>
+        </div>
+
+        <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--border)">
+          <div class="canvas-side-label">Drafts prontos <span class="count">1</span></div>
+          <div class="canvas-suggest">
+            <div class="canvas-suggest-meta">Para Lutz Mader</div>
+            <div class="canvas-suggest-text">Rascunho: prefiro a abordagem simples com cron + openssl…</div>
+            <div class="canvas-suggest-slot">→ revisar e enviar</div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const views = document.querySelectorAll('.view');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.view;
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+      views.forEach(v => v.classList.toggle('active', v.id === 'view-' + target));
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+  });
+</script>
+
+</body>
+</html>

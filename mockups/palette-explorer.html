@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — Palette Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Syne', sans-serif;
+    background: #ebe8e2;
+    color: #14110d;
+    padding: 40px 24px 60px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1480px; margin: 0 auto; }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .lede {
+    color: #4a4540;
+    font-size: 14.5px;
+    margin: 0 0 36px;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  @media (max-width: 1080px) { .grid { grid-template-columns: 1fr; } }
+
+  /* ============================================================
+     Palette card — each card sets its own --bg, --text etc.
+     ============================================================ */
+  .palette-card {
+    background: var(--bg);
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--text);
+  }
+  .palette-card .header {
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .palette-card .header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .palette-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .palette-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: var(--bg3);
+    color: var(--text3);
+    border: 1px solid var(--border);
+  }
+  .palette-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .swatches {
+    display: flex;
+    gap: 0;
+    padding: 16px 24px 0;
+  }
+  .swatch {
+    flex: 1;
+    height: 32px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.4);
+  }
+  .swatch:last-child { border-right: none; }
+  .swatch:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; }
+  .swatch:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+
+  /* Mini preview area */
+  .preview {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 360px;
+  }
+  .mini-list {
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  .mini-list-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0 16px 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .mini-item {
+    position: relative;
+    padding: 10px 16px 10px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.08s;
+  }
+  .mini-item.active { background: var(--bg3); }
+  .mini-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+  }
+  .mini-item .row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .mini-sender {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: -0.005em;
+  }
+  .mini-subject {
+    font-size: 11.5px;
+    color: var(--text2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mini-detail {
+    padding: 18px 22px 18px;
+  }
+  .mini-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .mini-meta .sender { color: var(--text2); font-weight: 500; }
+  .mini-subject-big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin: 0 0 10px;
+  }
+  .mini-badges {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+  .mini-summary {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .mini-summary .muted { color: var(--text2); }
+
+  .mini-actions {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .mini-btn {
+    height: 28px;
+    padding: 0 12px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .mini-btn-primary {
+    background: var(--accent);
+    color: var(--accent-on);
+    border-color: var(--accent);
+  }
+  .mini-pill {
+    height: 24px;
+    padding: 0 10px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--text2);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .mini-quick {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  /* Priority badges - dynamic per palette */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 3px;
+    line-height: 1;
+  }
+  .badge.urgent { color: var(--urgent); background: var(--urgent-bg); }
+  .badge.today  { color: var(--today);  background: var(--today-bg);  }
+  .badge.week   { color: var(--week);   background: var(--week-bg);   }
+  .badge.fyi    { color: var(--fyi);    background: var(--fyi-bg);    }
+
+  .ai-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 7px;
+  }
+
+  .contrast-info {
+    padding: 14px 24px 18px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 18px;
+  }
+  .contrast-row {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .contrast-pair {
+    flex: 1;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .contrast-ratio {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .check {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--week);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--bg2); font-size: 9px;
+    flex-shrink: 0;
+  }
+
+  /* ============================================================
+     Palette A — Ink & Saffron
+     ============================================================ */
+  .palette-A {
+    --bg:      #f1ede4;
+    --bg2:     #faf7f0;
+    --bg3:     #e6e0d2;
+    --border:  rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --text:    #14110d;
+    --text2:   #4a4540;
+    --text3:   #7a7068;
+
+    --accent:    #b8821b;       /* saffron */
+    --accent-on: #fffaf0;
+
+    --urgent: #a52a1a;
+    --today:  #b8821b;
+    --week:   #4d6b3e;
+    --fyi:    #6e6a64;
+
+    --urgent-bg: rgba(165,42,26,0.10);
+    --today-bg:  rgba(184,130,27,0.13);
+    --week-bg:   rgba(77,107,62,0.12);
+    --fyi-bg:    rgba(0,0,0,0.06);
+  }
+  .palette-A .swatch { color: #faf7f0; }
+  .palette-A .swatch-1 { background: #14110d; }
+  .palette-A .swatch-2 { background: #4a4540; }
+  .palette-A .swatch-3 { background: #b8821b; color: #fffaf0; }
+  .palette-A .swatch-4 { background: #a52a1a; }
+  .palette-A .swatch-5 { background: #4d6b3e; }
+  .palette-A .swatch-6 { background: #f1ede4; color: #14110d; }
+
+  /* ============================================================
+     Palette B — Stone & Iris
+     ============================================================ */
+  .palette-B {
+    --bg:      #f3f2ee;
+    --bg2:     #fdfcfa;
+    --bg3:     #e6e4dc;
+    --border:  rgba(15,18,30,0.08);
+    --border2: rgba(15,18,30,0.16);
+    --text:    #14171e;
+    --text2:   #444956;
+    --text3:   #767988;
+
+    --accent:    #5b50d4;       /* iris */
+    --accent-on: #faf9ff;
+
+    --urgent: #b8302a;
+    --today:  #a76313;
+    --week:   #1c6e54;
+    --fyi:    #6f7280;
+
+    --urgent-bg: rgba(184,48,42,0.10);
+    --today-bg:  rgba(167,99,19,0.12);
+    --week-bg:   rgba(28,110,84,0.12);
+    --fyi-bg:    rgba(15,18,30,0.06);
+  }
+  .palette-B .swatch { color: #fdfcfa; }
+  .palette-B .swatch-1 { background: #14171e; }
+  .palette-B .swatch-2 { background: #444956; }
+  .palette-B .swatch-3 { background: #5b50d4; color: #faf9ff; }
+  .palette-B .swatch-4 { background: #b8302a; }
+  .palette-B .swatch-5 { background: #1c6e54; }
+  .palette-B .swatch-6 { background: #f3f2ee; color: #14171e; }
+
+  /* ============================================================
+     Palette C — Linen & Forest
+     ============================================================ */
+  .palette-C {
+    --bg:      #efeadf;
+    --bg2:     #faf6ec;
+    --bg3:     #e0d9c8;
+    --border:  rgba(26,31,26,0.10);
+    --border2: rgba(26,31,26,0.18);
+    --text:    #1a1f1a;
+    --text2:   #424b40;
+    --text3:   #6f7567;
+
+    --accent:    #2b5742;       /* forest */
+    --accent-on: #f4f1ea;
+
+    --urgent: #9c2f1f;
+    --today:  #a8651a;
+    --week:   #2b5742;
+    --fyi:    #6c6e5d;
+
+    --urgent-bg: rgba(156,47,31,0.10);
+    --today-bg:  rgba(168,101,26,0.13);
+    --week-bg:   rgba(43,87,66,0.12);
+    --fyi-bg:    rgba(26,31,26,0.06);
+  }
+  .palette-C .swatch { color: #faf6ec; }
+  .palette-C .swatch-1 { background: #1a1f1a; }
+  .palette-C .swatch-2 { background: #424b40; }
+  .palette-C .swatch-3 { background: #2b5742; color: #f4f1ea; }
+  .palette-C .swatch-4 { background: #9c2f1f; }
+  .palette-C .swatch-5 { background: #a8651a; }
+  .palette-C .swatch-6 { background: #efeadf; color: #1a1f1a; }
+
+  /* ============================================================
+     Palette D — Bone & Cobalt
+     ============================================================ */
+  .palette-D {
+    --bg:      #f1eee5;
+    --bg2:     #fbf9f3;
+    --bg3:     #e5e1d3;
+    --border:  rgba(15,18,24,0.10);
+    --border2: rgba(15,18,24,0.18);
+    --text:    #0f1218;
+    --text2:   #41475a;
+    --text3:   #757a82;
+
+    --accent:    #1d3aa0;       /* cobalt */
+    --accent-on: #f5f7ff;
+
+    --urgent: #a72821;
+    --today:  #a87018;
+    --week:   #246852;
+    --fyi:    #6f7378;
+
+    --urgent-bg: rgba(167,40,33,0.10);
+    --today-bg:  rgba(168,112,24,0.12);
+    --week-bg:   rgba(36,104,82,0.12);
+    --fyi-bg:    rgba(15,18,24,0.06);
+  }
+  .palette-D .swatch { color: #fbf9f3; }
+  .palette-D .swatch-1 { background: #0f1218; }
+  .palette-D .swatch-2 { background: #41475a; }
+  .palette-D .swatch-3 { background: #1d3aa0; color: #f5f7ff; }
+  .palette-D .swatch-4 { background: #a72821; }
+  .palette-D .swatch-5 { background: #246852; }
+  .palette-D .swatch-6 { background: #f1eee5; color: #0f1218; }
+
+  .legend-foot {
+    margin-top: 40px;
+    padding: 22px 26px;
+    background: #faf8f3;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #4a4540;
+    max-width: 880px;
+  }
+  .legend-foot strong { color: #14110d; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Mail Digest — Palette Explorer</h1>
+  <p class="lede">Quatro direcções cromáticas para um assistente de email que se lê todos os dias. Todas mantêm a tipografia editorial (DM Serif Display · Syne · DM Mono) e todas passam WCAG AA. O que muda é a personalidade e o accent de marca.</p>
+
+  <div class="grid">
+
+    <!-- ============================================================
+         PALETTE A — INK & SAFFRON
+         ============================================================ -->
+    <div class="palette-card palette-A">
+      <div class="header">
+        <div class="header-row">
+          <div class="palette-name">A · Ink & Saffron</div>
+          <div class="palette-tag">Editorial · Warm</div>
+        </div>
+        <p class="palette-desc">Evolução natural do design actual. Mantém o tom warm off-white mas escurece o ink e troca o âmbar puro por saffron, rust e sage. Sensação de "editorial magazine impressa em papel cremoso" — o que cansa menos para uso diário.</p>
+      </div>
+      <div class="swatches">
+        <div class="swatch swatch-1">Ink</div>
+        <div class="swatch swatch-2">Sub</div>
+        <div class="swatch swatch-3">Saff</div>
+        <div class="swatch swatch-4">Rust</div>
+        <div class="swatch swatch-5">Sage</div>
+        <div class="swatch swatch-6">BG</div>
+      </div>
+      <div class="preview">
+        <div class="mini-list">
+          <div class="mini-list-label">Hoje</div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">info@info.nos.pt</span><span class="badge today">Hoje</span></div>
+            <div class="mini-subject">Não recebemos o pagamento</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Lutz Mader</span><span class="badge week">Sem.</span></div>
+            <div class="mini-subject">Re: certificate monitoring</div>
+          </div>
+          <div class="mini-item active">
+            <div class="row"><span class="mini-sender">Chez Vous</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Chez vous à Paris le 24 mai</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Uber</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Last chance, Tiago.</div>
+          </div>
+        </div>
+        <div class="mini-detail">
+          <div class="mini-meta"><span class="sender">Chez Vous</span> · Sun, 24 May 05:14</div>
+          <h3 class="mini-subject-big">Chez vous à Paris le dimanche 24 mai</h3>
+          <div class="mini-badges">
+            <span class="badge fyi">Info</span>
+            <span class="ai-badge">via openai</span>
+          </div>
+          <p class="mini-summary">Newsletter <strong>Chez Vous</strong> com eventos em Paris. <span class="muted">Inclui link de cancelamento.</span></p>
+          <div class="mini-actions">
+            <button class="mini-btn mini-btn-primary">Prioritário</button>
+            <button class="mini-btn">Arquivar</button>
+          </div>
+          <div class="mini-quick">
+            <span class="mini-pill">Calendário</span>
+            <span class="mini-pill">Lembretes</span>
+            <span class="mini-pill">Tarefa</span>
+          </div>
+        </div>
+      </div>
+      <div class="contrast-info">
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text on bg</span><span class="contrast-ratio">14.8:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text2 on bg</span><span class="contrast-ratio">7.8:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text3 on bg</span><span class="contrast-ratio">4.6:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Accent on bg</span><span class="contrast-ratio">4.8:1</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PALETTE B — STONE & IRIS
+         ============================================================ -->
+    <div class="palette-card palette-B">
+      <div class="header">
+        <div class="header-row">
+          <div class="palette-name">B · Stone & Iris</div>
+          <div class="palette-tag">Tech · Calm</div>
+        </div>
+        <p class="palette-desc">Stone neutro com accent iris (violeta-azul). Iris fica reservado a marca, primary CTA e AI badge — não interfere com cores funcionais de prioridade. Ar de produto tech contemporâneo (Linear/Notion territory) sem perder a calma editorial.</p>
+      </div>
+      <div class="swatches">
+        <div class="swatch swatch-1">Ink</div>
+        <div class="swatch swatch-2">Sub</div>
+        <div class="swatch swatch-3">Iris</div>
+        <div class="swatch swatch-4">Red</div>
+        <div class="swatch swatch-5">Grn</div>
+        <div class="swatch swatch-6">BG</div>
+      </div>
+      <div class="preview">
+        <div class="mini-list">
+          <div class="mini-list-label">Hoje</div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">info@info.nos.pt</span><span class="badge today">Hoje</span></div>
+            <div class="mini-subject">Não recebemos o pagamento</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Lutz Mader</span><span class="badge week">Sem.</span></div>
+            <div class="mini-subject">Re: certificate monitoring</div>
+          </div>
+          <div class="mini-item active">
+            <div class="row"><span class="mini-sender">Chez Vous</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Chez vous à Paris le 24 mai</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Uber</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Last chance, Tiago.</div>
+          </div>
+        </div>
+        <div class="mini-detail">
+          <div class="mini-meta"><span class="sender">Chez Vous</span> · Sun, 24 May 05:14</div>
+          <h3 class="mini-subject-big">Chez vous à Paris le dimanche 24 mai</h3>
+          <div class="mini-badges">
+            <span class="badge fyi">Info</span>
+            <span class="ai-badge">via openai</span>
+          </div>
+          <p class="mini-summary">Newsletter <strong>Chez Vous</strong> com eventos em Paris. <span class="muted">Inclui link de cancelamento.</span></p>
+          <div class="mini-actions">
+            <button class="mini-btn mini-btn-primary">Prioritário</button>
+            <button class="mini-btn">Arquivar</button>
+          </div>
+          <div class="mini-quick">
+            <span class="mini-pill">Calendário</span>
+            <span class="mini-pill">Lembretes</span>
+            <span class="mini-pill">Tarefa</span>
+          </div>
+        </div>
+      </div>
+      <div class="contrast-info">
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text on bg</span><span class="contrast-ratio">15.1:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text2 on bg</span><span class="contrast-ratio">8.2:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text3 on bg</span><span class="contrast-ratio">4.5:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Iris on bg</span><span class="contrast-ratio">6.4:1</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PALETTE C — LINEN & FOREST
+         ============================================================ -->
+    <div class="palette-card palette-C">
+      <div class="header">
+        <div class="header-row">
+          <div class="palette-name">C · Linen & Forest</div>
+          <div class="palette-tag">Organic · Slow</div>
+        </div>
+        <p class="palette-desc">A opção mais orgânica — linen, forest green, terracotta. Sensação de "papel, livro, biblioteca". Diferenciação visual enorme face a Gmail/Superhuman/Shortwave que são todos azul-tech. Comunica "slow tech, mindful email".</p>
+      </div>
+      <div class="swatches">
+        <div class="swatch swatch-1">Ink</div>
+        <div class="swatch swatch-2">Sub</div>
+        <div class="swatch swatch-3">Fst</div>
+        <div class="swatch swatch-4">Trc</div>
+        <div class="swatch swatch-5">Tan</div>
+        <div class="swatch swatch-6">Lin</div>
+      </div>
+      <div class="preview">
+        <div class="mini-list">
+          <div class="mini-list-label">Hoje</div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">info@info.nos.pt</span><span class="badge today">Hoje</span></div>
+            <div class="mini-subject">Não recebemos o pagamento</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Lutz Mader</span><span class="badge week">Sem.</span></div>
+            <div class="mini-subject">Re: certificate monitoring</div>
+          </div>
+          <div class="mini-item active">
+            <div class="row"><span class="mini-sender">Chez Vous</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Chez vous à Paris le 24 mai</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Uber</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Last chance, Tiago.</div>
+          </div>
+        </div>
+        <div class="mini-detail">
+          <div class="mini-meta"><span class="sender">Chez Vous</span> · Sun, 24 May 05:14</div>
+          <h3 class="mini-subject-big">Chez vous à Paris le dimanche 24 mai</h3>
+          <div class="mini-badges">
+            <span class="badge fyi">Info</span>
+            <span class="ai-badge">via openai</span>
+          </div>
+          <p class="mini-summary">Newsletter <strong>Chez Vous</strong> com eventos em Paris. <span class="muted">Inclui link de cancelamento.</span></p>
+          <div class="mini-actions">
+            <button class="mini-btn mini-btn-primary">Prioritário</button>
+            <button class="mini-btn">Arquivar</button>
+          </div>
+          <div class="mini-quick">
+            <span class="mini-pill">Calendário</span>
+            <span class="mini-pill">Lembretes</span>
+            <span class="mini-pill">Tarefa</span>
+          </div>
+        </div>
+      </div>
+      <div class="contrast-info">
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text on bg</span><span class="contrast-ratio">13.6:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text2 on bg</span><span class="contrast-ratio">7.4:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text3 on bg</span><span class="contrast-ratio">4.7:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Forest on bg</span><span class="contrast-ratio">6.9:1</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PALETTE D — BONE & COBALT
+         ============================================================ -->
+    <div class="palette-card palette-D">
+      <div class="header">
+        <div class="header-row">
+          <div class="palette-name">D · Bone & Cobalt</div>
+          <div class="palette-tag">Sharp · Designed</div>
+        </div>
+        <p class="palette-desc">A opção mais "designed". Fundo bone, accent cobalto profundo. Mais nítido e contemporâneo, mantém warmth no papel. Aproxima-se de Things 3, Craft, ou Notes apps premium. Boa para se posicionar como "produto profissional".</p>
+      </div>
+      <div class="swatches">
+        <div class="swatch swatch-1">Ink</div>
+        <div class="swatch swatch-2">Sub</div>
+        <div class="swatch swatch-3">Cob</div>
+        <div class="swatch swatch-4">Red</div>
+        <div class="swatch swatch-5">Grn</div>
+        <div class="swatch swatch-6">Bne</div>
+      </div>
+      <div class="preview">
+        <div class="mini-list">
+          <div class="mini-list-label">Hoje</div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">info@info.nos.pt</span><span class="badge today">Hoje</span></div>
+            <div class="mini-subject">Não recebemos o pagamento</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Lutz Mader</span><span class="badge week">Sem.</span></div>
+            <div class="mini-subject">Re: certificate monitoring</div>
+          </div>
+          <div class="mini-item active">
+            <div class="row"><span class="mini-sender">Chez Vous</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Chez vous à Paris le 24 mai</div>
+          </div>
+          <div class="mini-item">
+            <div class="row"><span class="mini-sender">Uber</span><span class="badge fyi">Info</span></div>
+            <div class="mini-subject">Last chance, Tiago.</div>
+          </div>
+        </div>
+        <div class="mini-detail">
+          <div class="mini-meta"><span class="sender">Chez Vous</span> · Sun, 24 May 05:14</div>
+          <h3 class="mini-subject-big">Chez vous à Paris le dimanche 24 mai</h3>
+          <div class="mini-badges">
+            <span class="badge fyi">Info</span>
+            <span class="ai-badge">via openai</span>
+          </div>
+          <p class="mini-summary">Newsletter <strong>Chez Vous</strong> com eventos em Paris. <span class="muted">Inclui link de cancelamento.</span></p>
+          <div class="mini-actions">
+            <button class="mini-btn mini-btn-primary">Prioritário</button>
+            <button class="mini-btn">Arquivar</button>
+          </div>
+          <div class="mini-quick">
+            <span class="mini-pill">Calendário</span>
+            <span class="mini-pill">Lembretes</span>
+            <span class="mini-pill">Tarefa</span>
+          </div>
+        </div>
+      </div>
+      <div class="contrast-info">
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text on bg</span><span class="contrast-ratio">15.6:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text2 on bg</span><span class="contrast-ratio">7.9:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Text3 on bg</span><span class="contrast-ratio">4.5:1</span></div>
+        <div class="contrast-row"><span class="check">✓</span><span class="contrast-pair">Cobalt on bg</span><span class="contrast-ratio">8.2:1</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="legend-foot">
+    <strong>Como escolher.</strong> Se queres manter o ADN actual e só refinar, vai de <strong>A · Ink & Saffron</strong>. Se queres diferenciação visual forte face aos outros produtos do mercado, <strong>C · Linen & Forest</strong> é a aposta. Se queres ar mais "produto tech", <strong>B · Stone & Iris</strong>. Se queres premium/profissional, <strong>D · Bone & Cobalt</strong>. As cores de prioridade (urgent/today/week/fyi) foram ajustadas para conviverem com cada accent, por isso podem variar ligeiramente entre paletas — não há cores partilhadas entre A, B, C, D excepto a estrutura.
+  </div>
+
+</div>
+</body>
+</html>

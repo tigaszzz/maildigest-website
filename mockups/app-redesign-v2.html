@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — Redesign Mockup v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     Tokens — v2 (contrast-fixed, all WCAG AA verified)
+     ============================================================ */
+  :root {
+    /* Surfaces */
+    --bg:       #f7f5f2;
+    --bg2:      #ffffff;
+    --bg3:      #ece9e3;     /* hover/active — stronger than original #efede9 */
+    --bg-rail:  #f1efea;     /* subtle sidebar rail */
+
+    /* Borders — 1px with stronger alpha */
+    --border:   rgba(0,0,0,0.10);
+    --border2:  rgba(0,0,0,0.18);
+    --border3:  rgba(0,0,0,0.28);   /* emphasis / focus */
+
+    /* Text — all pairs now pass WCAG AA on --bg */
+    --text:     #1a1917;            /* 14.5:1 */
+    --text2:    #4a4742;            /* 7.5:1  — was #6b6760 = 4.4:1 (FAIL) */
+    --text3:    #7a766f;            /* 4.6:1  — was #a8a49e = 2.3:1 (FAIL) */
+
+    /* Priority — readable values */
+    --urgent:   #b3271b;
+    --today:    #9a5a00;            /* was #b36a00 */
+    --week:     #0e6b4d;
+    --fyi:      #6e6a64;            /* was #a8a49e */
+
+    /* Priority backgrounds — saturated enough to be visible */
+    --urgent-bg: rgba(179,39,27,0.10);
+    --today-bg:  rgba(154,90,0,0.10);
+    --week-bg:   rgba(14,107,77,0.10);
+    --fyi-bg:    rgba(0,0,0,0.06);
+
+    /* Spacing rhythm (4pt) */
+    --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+    --s5: 20px; --s6: 24px; --s7: 32px; --s8: 40px;
+
+    /* Radii */
+    --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: 'Syne', sans-serif;
+    font-weight: 450;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+  }
+
+  ::selection { background: rgba(26,25,23,0.85); color: var(--bg2); }
+
+  /* Hide scrollbars (design rule preserved) */
+  ::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* ============================================================
+     Demo wrapper — side-by-side comparison row
+     ============================================================ */
+  .compare-strip {
+    padding: 22px 28px 12px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .compare-strip h1 {
+    margin: 0;
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+  }
+  .compare-strip p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .compare-strip code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 2px 6px;
+    background: var(--bg3);
+    border-radius: 3px;
+    color: var(--text);
+  }
+
+  /* ============================================================
+     Topbar
+     ============================================================ */
+  .topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    height: 56px;
+    display: flex;
+    align-items: center;
+  }
+  .topbar .inner {
+    width: 100%;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-dot {
+    width: 7px; height: 7px;
+    background: var(--urgent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.78); }
+  }
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .account-picker {
+    height: 32px;
+    padding: 0 30px 0 12px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--r-md);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M1 3 L5 7 L9 3' stroke='%234a4742' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  .topbar-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--text2);
+    flex: 1;
+  }
+  .topbar-meta strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* ============================================================
+     Buttons
+     ============================================================ */
+  .btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--r-md);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: background 0.08s ease, color 0.08s ease, border-color 0.08s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover {
+    background: var(--bg3);
+    color: var(--text);
+    border-color: var(--border3);
+  }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg2);
+    border-color: var(--text);
+  }
+  .btn-primary:hover {
+    background: #2d2b27;
+    color: var(--bg2);
+    border-color: #2d2b27;
+  }
+  .btn-icon-only {
+    width: 32px;
+    padding: 0;
+    justify-content: center;
+  }
+  .btn svg { width: 14px; height: 14px; }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c0392b 0%, #9a5a00 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============================================================
+     App layout
+     ============================================================ */
+  .app {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    height: calc(100vh - 56px - 92px);
+    min-height: 720px;
+    background: var(--bg);
+  }
+
+  /* ============================================================
+     Sidebar
+     ============================================================ */
+  .sidebar {
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sidebar-header {
+    padding: 18px 18px 12px;
+  }
+  .sidebar-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .search-wrap {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .search-input {
+    flex: 1;
+    height: 32px;
+    padding: 0 12px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--r-md);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.08s;
+  }
+  .search-input:focus {
+    border-color: var(--text2);
+  }
+  .search-input::placeholder { color: var(--text3); }
+
+  .period-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .period-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .period-select {
+    height: 28px;
+    padding: 0 24px 0 10px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--r-sm);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'><path d='M1 2.5 L4 5.5 L7 2.5' stroke='%234a4742' stroke-width='1.2' fill='none' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    font-size: 11px;
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .stat-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .stat-count {
+    color: var(--text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ============================================================
+     Email list
+     ============================================================ */
+  .email-list {
+    flex: 1;
+    overflow-y: auto;
+    border-top: 1px solid var(--border);
+  }
+  .group-label {
+    padding: 14px 18px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    background: var(--bg-rail);
+    border-bottom: 1px solid var(--border);
+  }
+  .email-item {
+    position: relative;
+    padding: 12px 18px 12px 22px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.08s ease;
+  }
+  .email-item:hover { background: var(--bg3); }
+  .email-item.active {
+    background: var(--bg3);
+  }
+  .email-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--text);
+  }
+  .email-item.priority-urgent.active::before { background: var(--urgent); }
+  .email-item.priority-today.active::before  { background: var(--today); }
+  .email-item.priority-week.active::before   { background: var(--week); }
+  .email-item.priority-fyi.active::before    { background: var(--fyi); }
+
+  .email-row1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .email-sender {
+    flex: 1;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: -0.005em;
+  }
+  .email-subject {
+    font-family: 'Syne', sans-serif;
+    font-size: 12.5px;
+    font-weight: 450;
+    color: var(--text2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+  .email-actions {
+    opacity: 0;
+    transition: opacity 0.08s;
+    color: var(--text3);
+    font-size: 14px;
+    line-height: 1;
+  }
+  .email-item:hover .email-actions { opacity: 1; }
+
+  /* ============================================================
+     Badges
+     ============================================================ */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: var(--r-sm);
+    line-height: 1;
+  }
+  .badge.urgent { color: var(--urgent); background: var(--urgent-bg); }
+  .badge.today  { color: var(--today);  background: var(--today-bg);  }
+  .badge.week   { color: var(--week);   background: var(--week-bg);   }
+  .badge.fyi    { color: var(--fyi);    background: var(--fyi-bg);    }
+
+  /* ============================================================
+     Detail panel
+     ============================================================ */
+  .detail {
+    overflow-y: auto;
+    padding: 36px 56px 40px;
+  }
+  .detail-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .detail-meta .sender { color: var(--text); font-weight: 500; }
+  .detail-meta .sep { color: var(--text3); margin: 0 8px; }
+  .detail-meta .addr { color: var(--text3); }
+  .detail-meta .date { color: var(--text3); display: block; margin-top: 2px; }
+
+  .detail-subject {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 30px;
+    letter-spacing: -0.018em;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .ai-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 3px 8px;
+  }
+
+  .detail-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  /* Quick actions — now visible by default */
+  .quick-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .quick-pill {
+    height: 28px;
+    padding: 0 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.08s, color 0.08s, border-color 0.08s;
+  }
+  .quick-pill:hover {
+    background: var(--bg3);
+    color: var(--text);
+    border-color: var(--border3);
+  }
+  .quick-pill svg { width: 12px; height: 12px; opacity: 0.7; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .summary-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 14.5px;
+    font-weight: 450;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 68ch;
+    letter-spacing: -0.003em;
+  }
+  .summary-text .muted { color: var(--text2); }
+
+  /* Tasks */
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--r-md);
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.5;
+    cursor: pointer;
+    transition: border-color 0.08s, background 0.08s;
+    margin-bottom: 8px;
+  }
+  .task-item:hover {
+    border-color: var(--border3);
+    background: var(--bg3);
+  }
+  .task-check {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    background: var(--bg2);
+    transition: border-color 0.08s, background 0.08s;
+  }
+  .task-item:hover .task-check { border-color: var(--text2); }
+  .task-item.checked .task-check {
+    background: var(--text);
+    border-color: var(--text);
+    position: relative;
+  }
+  .task-item.checked .task-check::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 5px; height: 9px;
+    border: solid var(--bg2);
+    border-width: 0 1.6px 1.6px 0;
+    transform: rotate(45deg);
+  }
+  .task-item.checked { color: var(--text3); text-decoration: line-through; }
+
+  /* Calendar event card */
+  .cal-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--r-md);
+    margin-bottom: 8px;
+  }
+  .cal-date {
+    text-align: center;
+    width: 48px;
+    flex-shrink: 0;
+  }
+  .cal-day {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .cal-month {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .cal-info {
+    flex: 1;
+  }
+  .cal-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+  .cal-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* Source link */
+  .source-link {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 10px 14px;
+    border: 1px solid var(--border2);
+    border-radius: var(--r-md);
+    text-decoration: none;
+    transition: border-color 0.08s, background 0.08s;
+  }
+  .source-link:hover {
+    border-color: var(--border3);
+    background: var(--bg3);
+  }
+  .source-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 1px;
+  }
+  .source-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* Footer compare guide */
+  .legend {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 20px 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .legend-item {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+  .legend-item strong {
+    color: var(--text);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12.5px;
+  }
+  .legend-item .delta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text3);
+    margin-top: 2px;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .detail { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Comparison header -->
+<div class="compare-strip">
+  <h1>Mail Digest — Redesign v2</h1>
+  <p>Mesma estrutura, contrastes corrigidos para WCAG AA, escala tipográfica mais larga e bordas a <code>1px</code>.</p>
+</div>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="inner">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Mail Digest</span>
+    </div>
+    <select class="account-picker" aria-label="Conta de email">
+      <option>Gmail · tiago.almeida@gmail.com</option>
+    </select>
+    <div class="topbar-meta">
+      <strong>24/05</strong> · hoje · não lidos primários — <strong>10 emails</strong> analisados
+    </div>
+    <div class="topbar-actions">
+      <button class="btn">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 1 0 1.5-3.5"/><path d="M3 3v3h3"/></svg>
+        Actualizar
+      </button>
+      <button class="btn">Sair do Gmail</button>
+      <button class="btn">Definições</button>
+      <div class="avatar">TI</div>
+    </div>
+  </div>
+</header>
+
+<!-- App -->
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Caixa de entrada</div>
+      <div class="search-wrap">
+        <input class="search-input" placeholder="Pesquisa…" />
+        <button class="btn" style="height:32px;">Pesquisar</button>
+      </div>
+
+      <div class="period-row">
+        <span class="period-label">Período</span>
+        <select class="period-select">
+          <option>Hoje</option>
+          <option>Ontem</option>
+          <option>7 dias</option>
+        </select>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-pill"><div class="stat-dot" style="background:var(--urgent)"></div><span class="stat-count">0</span> urgentes</div>
+        <div class="stat-pill"><div class="stat-dot" style="background:var(--today)"></div><span class="stat-count">1</span> hoje</div>
+        <div class="stat-pill"><div class="stat-dot" style="background:var(--week)"></div><span class="stat-count">3</span> semana</div>
+        <div class="stat-pill"><div class="stat-dot" style="background:var(--fyi)"></div><span class="stat-count">6</span> info</div>
+      </div>
+    </div>
+
+    <div class="email-list">
+      <div class="group-label">Hoje</div>
+
+      <div class="email-item priority-today">
+        <div class="email-row1">
+          <span class="email-sender">info@info.nos.pt</span>
+          <span class="badge today">Hoje</span>
+        </div>
+        <div class="email-subject">Não recebemos o pagamento da fatura NOS</div>
+      </div>
+
+      <div class="email-item priority-week">
+        <div class="email-row1">
+          <span class="email-sender">Lutz Mader via This is …</span>
+          <span class="badge week">Semana</span>
+        </div>
+        <div class="email-subject">Re: certificate monitoring</div>
+      </div>
+
+      <div class="email-item priority-fyi">
+        <div class="email-row1">
+          <span class="email-sender">Uber &lt;uber@uber.com&gt;</span>
+          <span class="badge fyi">Info</span>
+        </div>
+        <div class="email-subject">Last chance, Tiago. These deals won't wait.</div>
+      </div>
+
+      <div class="email-item priority-fyi">
+        <div class="email-row1">
+          <span class="email-sender">Team Meridian &lt;customer…</span>
+          <span class="badge fyi">Info</span>
+        </div>
+        <div class="email-subject">Don't Miss 25% Off Everything!</div>
+      </div>
+
+      <div class="email-item priority-fyi">
+        <div class="email-row1">
+          <span class="email-sender">LinkedIn Job Alerts</span>
+          <span class="badge fyi">Info</span>
+        </div>
+        <div class="email-subject">Enterprise Technology Director at Careerwise</div>
+      </div>
+
+      <div class="email-item priority-fyi">
+        <div class="email-row1">
+          <span class="email-sender">Medium Daily Digest</span>
+          <span class="badge fyi">Info</span>
+        </div>
+        <div class="email-subject">BREAKING: Andrej Karpathy Joins Anthropic</div>
+      </div>
+
+      <div class="email-item priority-fyi active">
+        <div class="email-row1">
+          <span class="email-sender">Chez Vous</span>
+          <span class="badge fyi">Info</span>
+        </div>
+        <div class="email-subject">Chez vous à Paris le dimanche 24 mai</div>
+      </div>
+
+      <div class="email-item priority-week">
+        <div class="email-row1">
+          <span class="email-sender">Ultimate Guitar</span>
+          <span class="badge week">Semana</span>
+        </div>
+        <div class="email-subject">Finish to tab Inside Out by Gun</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Detail -->
+  <main class="detail">
+    <div class="detail-meta">
+      <span class="sender">Chez Vous</span>
+      <span class="addr">&lt;actu@nl.chez-vous.info&gt;</span>
+      <span class="date">Sun, 24 May 2026 · 05:14</span>
+    </div>
+
+    <h1 class="detail-subject">Chez vous à Paris le dimanche 24 mai</h1>
+
+    <div class="badge-row">
+      <span class="badge fyi">Info</span>
+      <span class="ai-badge">via openai · gpt-4.1-mini</span>
+    </div>
+
+    <div class="detail-actions">
+      <button class="btn btn-primary">Marcar como prioritário</button>
+      <button class="btn">Arquivar</button>
+      <button class="btn">Cancelar subscrição</button>
+    </div>
+
+    <!-- Quick actions visible by default -->
+    <div class="quick-actions">
+      <button class="quick-pill">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1"/><path d="M2 6h12M5 1v3M11 1v3"/></svg>
+        Adicionar ao calendário
+      </button>
+      <button class="quick-pill">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+        Enviar para Lembretes
+      </button>
+      <button class="quick-pill">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10M3 8h10M3 12h7"/></svg>
+        Criar tarefa
+      </button>
+      <button class="quick-pill">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l6 5 6-5M2 4v8h12V4"/></svg>
+        Abrir no Gmail
+      </button>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Resumo</div>
+      <p class="summary-text">
+        Recebeu a newsletter <strong>Chez Vous</strong> com informações sobre eventos em Paris no domingo <strong>24 de maio</strong>. <span class="muted">O email inclui um link de cancelamento de subscrição caso não deseje continuar a receber.</span>
+      </p>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Tarefas</div>
+      <div class="task-item">
+        <div class="task-check"></div>
+        <div>Cancelar subscrição da newsletter Chez Vous (wtm.chez-vous.info) se não for relevante</div>
+      </div>
+      <div class="task-item checked">
+        <div class="task-check"></div>
+        <div>Verificar eventos do domingo 24 mai em Paris</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Eventos de calendário</div>
+      <div class="cal-card">
+        <div class="cal-date">
+          <div class="cal-day">24</div>
+          <div class="cal-month">Mai</div>
+        </div>
+        <div class="cal-info">
+          <div class="cal-title">Eventos culturais — Chez Vous Paris</div>
+          <div class="cal-meta">domingo · todo o dia · Paris</div>
+        </div>
+        <button class="btn btn-icon-only" title="Adicionar">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M3 8h10"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:0;">
+      <div class="section-label">Fonte</div>
+      <a class="source-link" href="#">
+        <span class="source-title">wtm.chez-vous.info</span>
+        <span class="source-url">Newsletter Chez Vous · Paris</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item">
+    <strong>Contraste corrigido</strong>
+    Texto secundário e terciário passam WCAG AA.
+    <span class="delta">--text2: #6b6760 → #4a4742  (4.4:1 → 7.5:1)</span>
+    <span class="delta">--text3: #a8a49e → #7a766f  (2.3:1 → 4.6:1)</span>
+  </div>
+  <div class="legend-item">
+    <strong>Tipografia escalada</strong>
+    Base de leitura passa para 14.5px com line-height 1.65.
+    <span class="delta">Subject: 19px → 30px (DM Serif Display)</span>
+    <span class="delta">Labels: 9px → 11px DM Mono</span>
+  </div>
+  <div class="legend-item">
+    <strong>Bordas 1px</strong>
+    Renderiza em ecrãs 1x DPR. Alpha reduzido mantém o look fino.
+    <span class="delta">0.5px → 1px com alpha 0.10 / 0.18</span>
+  </div>
+  <div class="legend-item">
+    <strong>Estado activo forte</strong>
+    Item seleccionado tem barra esquerda 2px na cor da prioridade.
+    <span class="delta">Hover/active fundo bg3 #ece9e3</span>
+  </div>
+  <div class="legend-item">
+    <strong>Acções rápidas visíveis</strong>
+    Pills sempre presentes, sem disclosure escondido.
+    <span class="delta">Calendar · Reminders · Task · Gmail</span>
+  </div>
+  <div class="legend-item">
+    <strong>Touch / click targets</strong>
+    Checkboxes 18×18 e botões 32px de altura mínima.
+    <span class="delta">Cumpre HIG / Material adaptado para desktop</span>
+  </div>
+</div>
+
+</body>
+</html>

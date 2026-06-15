@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail Digest — Estado &amp; Roadmap</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg:      #f4efe4;
+    --bg2:     #fbf8f1;
+    --bg3:     #e9e2d2;
+    --bg4:     #efe9dc;
+    --border:  rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --border3: rgba(0,0,0,0.30);
+    --text:    #14110d;
+    --text2:   #4a4540;
+    --text3:   #7a7068;
+    --accent:    #b06d2a;
+    --accent-on: #fffaf0;
+    --urgent: #a52a1a;
+    --today:  #b06d2a;
+    --week:   #4d6b3e;
+    --fyi:    #6e6a64;
+    --done-bg:    rgba(77,107,62,0.10);
+    --done:       #2f5230;
+    --doing-bg:   rgba(176,109,42,0.13);
+    --doing:      #8a5117;
+    --planned-bg: rgba(0,0,0,0.05);
+    --planned:    #5a554e;
+    --maybe-bg:   rgba(0,0,0,0.04);
+    --maybe:      #7a7068;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 450;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  ::selection { background: rgba(20,17,13,0.9); color: var(--bg); }
+
+  /* ============================================================
+     Topbar
+     ============================================================ */
+  .topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .brand-dot {
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.78); }
+  }
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.015em;
+  }
+  .top-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-left: auto;
+  }
+  .updated-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+  }
+
+  /* ============================================================
+     Page wrap
+     ============================================================ */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 32px 80px;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 64px;
+  }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 40;
+    font-weight: 400;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0 0 22px;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    color: var(--accent);
+  }
+  .hero-lede {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--text2);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .hero-lede strong { color: var(--text); font-weight: 600; }
+
+  /* Mission box */
+  .mission {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px 30px;
+    margin-bottom: 72px;
+  }
+  .mission-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .mission p {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 28, 'SOFT' 30;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--text);
+    letter-spacing: -0.005em;
+  }
+  .mission p em { font-style: italic; }
+
+  /* Section header */
+  .section-head {
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border2);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .section-head .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: -0.018em;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--text);
+  }
+  .section-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+  }
+
+  .section { margin-bottom: 72px; }
+  .section-intro {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin: 0 0 22px;
+    max-width: 60ch;
+  }
+  .section-intro strong { color: var(--text); font-weight: 600; }
+
+  /* Feature card */
+  .feature {
+    padding: 22px 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    transition: border-color 0.08s;
+  }
+  .feature:hover { border-color: var(--border2); }
+  .feature-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .feature h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 30;
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    margin: 0;
+    flex: 1;
+    color: var(--text);
+  }
+  .feature p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin: 0 0 10px;
+    max-width: 64ch;
+  }
+  .feature p:last-child { margin-bottom: 0; }
+  .feature p strong { color: var(--text); font-weight: 600; }
+  .feature .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .feature .meta b { color: var(--text2); font-weight: 500; }
+
+  /* Status badge */
+  .status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .status.done    { color: var(--done);    background: var(--done-bg); }
+  .status.doing   { color: var(--doing);   background: var(--doing-bg); }
+  .status.planned { color: var(--planned); background: var(--planned-bg); }
+  .status.maybe   { color: var(--maybe);   background: var(--maybe-bg); }
+
+  /* Stack pills */
+  .stack-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .stack {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text2);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 3px;
+    letter-spacing: 0.03em;
+  }
+
+  /* Spec list — used for current capabilities */
+  .spec-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 28px;
+    margin-bottom: 20px;
+    padding: 22px 26px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  @media (max-width: 640px) {
+    .spec-list { grid-template-columns: 1fr; }
+  }
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    font-size: 13.5px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .spec-row:last-child,
+  .spec-row:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+  .spec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    flex-shrink: 0;
+  }
+  .spec-val { color: var(--text); text-align: right; font-weight: 500; }
+
+  /* Won't do list */
+  .wont {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 14px;
+  }
+  .wont-row {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .wont-row:last-child { border-bottom: none; }
+  .wont-row .x {
+    color: var(--urgent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .wont-row .label {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .wont-row .why {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 40px;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+  .footer b { color: var(--text2); font-weight: 500; }
+
+  /* Pull-quote */
+  .pull {
+    margin: 28px 0;
+    padding: 8px 0 8px 24px;
+    border-left: 3px solid var(--accent);
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 30;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--text);
+    letter-spacing: -0.005em;
+  }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="brand-mark">
+    <span class="brand-dot"></span>
+    <span class="brand-name">Mail Digest</span>
+  </div>
+  <span class="updated-meta">v0.4 · 25 Mai 2026</span>
+  <span class="top-tag">Estado &amp; Roadmap</span>
+</header>
+
+<main class="page">
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="kicker">Estado · Maio 2026</div>
+    <h1>Um <em>briefing</em> matinal do teu email, não outro cliente.</h1>
+    <p class="hero-lede">
+      O Mail Digest lê os teus emails de manhã, decide o que importa, e entrega-te um documento curto com <strong>o que precisa de ti</strong>, <strong>o que ele pode tratar</strong>, e o que pode ser ignorado. Roda na tua máquina, com o modelo de AI à tua escolha.
+    </p>
+  </section>
+
+  <!-- ============================================================
+       MISSION
+       ============================================================ -->
+  <div class="mission">
+    <div class="mission-label">Princípio fundador</div>
+    <p>
+      O email é uma <em>inbox de obrigações</em> escrita por outras pessoas. O Mail Digest transforma-a numa <em>checklist de decisões</em> escrita para ti — mais curta, ordenada por prioridade, e com acções inline. Não somos um cliente de email. Somos um assistente que <em>lê</em> email.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       SECTION 1 — IMPLEMENTADO HOJE
+       ============================================================ -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="num">01 · agora</div>
+        <h2>O que está implementado</h2>
+      </div>
+      <div class="count">v0.4 · funcional</div>
+    </div>
+
+    <p class="section-intro">
+      App Electron cross-platform (macOS · Windows · Linux) que se liga ao Gmail, lê as últimas 24h, e produz um digest estruturado com um modelo premium à escolha (Claude, GPT, ou Gemini). <strong>Corre no teu desktop</strong> — não há servidor Mail Digest no meio; os pedidos vão directos para o provider que configuraste.
+    </p>
+
+    <div class="spec-list">
+      <div class="spec-row"><span class="spec-label">Plataforma</span><span class="spec-val">Electron 33 · macOS · Win · Linux</span></div>
+      <div class="spec-row"><span class="spec-label">Email source</span><span class="spec-val">Gmail API (OAuth desktop)</span></div>
+      <div class="spec-row"><span class="spec-label">Janela</span><span class="spec-val">últimas 24h · primários · max 60</span></div>
+      <div class="spec-row"><span class="spec-label">Tokens</span><span class="spec-val">keychain do OS (keytar)</span></div>
+      <div class="spec-row"><span class="spec-label">Modelo default</span><span class="spec-val">Claude Sonnet (API key do utilizador)</span></div>
+      <div class="spec-row"><span class="spec-label">Providers</span><span class="spec-val">Anthropic · OpenAI · Google AI Studio</span></div>
+      <div class="spec-row"><span class="spec-label">Schedule</span><span class="spec-val">auto às 08:00 · configurável</span></div>
+      <div class="spec-row"><span class="spec-label">Privacidade</span><span class="spec-val">zero servidor próprio · zero analytics</span></div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Digest diário estruturado</h3>
+        <span class="status done">Feito</span>
+      </div>
+      <p>
+        Para cada email é extraído um objecto JSON com <strong>prioridade</strong> (urgent · today · this_week · fyi), <strong>resumo</strong> em 1–2 frases, <strong>tarefas</strong> derivadas, <strong>eventos de calendário</strong> detectados, e <strong>rascunho de resposta</strong> quando aplicável. O resultado é ordenado por prioridade e renderizado no painel principal.
+      </p>
+      <div class="meta"><b>Output schema ·</b> items[].{priority, summary, needs_reply, tasks[], calendar_events[], draft_reply}</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>3 providers premium à escolha</h3>
+        <span class="status done">Feito</span>
+      </div>
+      <p>
+        O utilizador escolhe <strong>Claude Sonnet</strong>, <strong>GPT-4.1 Mini</strong>, ou <strong>Gemini 2.5 Flash</strong> nas definições e cola a sua API key. O dropdown alterna provider e modelo sem mudar o workflow. Paga o provider directamente — a app é gratuita (MIT).
+      </p>
+      <div class="stack-row">
+        <span class="stack">@anthropic-ai/sdk</span>
+        <span class="stack">openai</span>
+        <span class="stack">@google/generative-ai</span>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Provider abstraction</h3>
+        <span class="status done">Feito</span>
+      </div>
+      <p>
+        Toda a parte de fetching de email passa por uma camada de provider. Hoje só existe o Gmail, mas a interface é genérica: <code>fetchRecentMessages(auth, opts) → Message[]</code>. Adicionar Outlook ou IMAP no futuro é só implementar mais um module.
+      </p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Site institucional + páginas legais</h3>
+        <span class="status done">Feito</span>
+      </div>
+      <p>
+        <strong>maildigest.app</strong> está em Cloudflare Pages com landing, privacy policy, e terms. <strong>hello@maildigest.app</strong> tem Email Routing configurado com SPF/DKIM/DMARC para reencaminhamento.
+      </p>
+      <div class="stack-row">
+        <span class="stack">Cloudflare Pages</span>
+        <span class="stack">Email Routing</span>
+        <span class="stack">DMARC enforce</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="pull">
+    "O que falta agora não é mais features — é fechar o gap entre <em>ler</em> emails e <em>agir</em> sobre eles."
+  </div>
+
+  <!-- ============================================================
+       SECTION 2 — PRÓXIMAS ITERAÇÕES (PROMPTS PRONTOS)
+       ============================================================ -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="num">02 · próximo</div>
+        <h2>Iterações com prompts prontos</h2>
+      </div>
+      <div class="count">4 features · ITERATIONS.md</div>
+    </div>
+
+    <p class="section-intro">
+      Os prompts detalhados destas quatro features estão escritos em <code>ITERATIONS.md</code> e são executáveis directamente em Cursor / Claude Code. Estimativa total: <strong>~14–17h de trabalho</strong>. Aumentam o sinal/ruído do digest e desbloqueiam o conceito de <em>assistente</em> em vez de <em>renderer</em>.
+    </p>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>1 · Auto-categorização (important · newsletter · transactional)</h3>
+        <span class="status planned">Próximo</span>
+      </div>
+      <p>
+        Adiciona um campo <code>category</code> ao schema do digest. UI passa a três secções: <strong>PARA TI</strong>, <strong>NEWSLETTERS &amp; FEEDS</strong>, <strong>TRANSACCIONAL</strong>. Resolve a sensação actual de "tudo misturado" e prepara o terreno para o passo seguinte.
+      </p>
+      <div class="meta"><b>Estimativa ·</b> ~1h · zero deps novas</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>2 · Compressão de newsletters num único parágrafo</h3>
+        <span class="status planned">Próximo</span>
+      </div>
+      <p>
+        Two-pass LLM: classifica primeiro, depois envia o subset de newsletters para um <code>NEWSLETTER_PROMPT</code> dedicado que sintetiza tudo num único parágrafo coeso. Em vez de 8 cards de newsletter, ficas com 1 parágrafo + breakdown colapsável por fonte.
+      </p>
+      <div class="meta"><b>Estimativa ·</b> ~3–4h · adiciona <code>newsletter_synthesis</code> ao schema</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>3 · Detecção de follow-ups (emails que enviaste sem resposta)</h3>
+        <span class="status planned">Próximo</span>
+      </div>
+      <p>
+        Vai à pasta <em>Sent</em>, identifica threads onde <strong>foste a última a falar</strong>, e mostra-os no topo do digest como secção <em>FOLLOW-UPS</em>. Cada item vem com rascunho de re-ping educado pré-gerado. Cap a 10 por digest. Persiste em SQLite (better-sqlite3) para evitar re-pingar items já tratados.
+      </p>
+      <div class="meta"><b>Estimativa ·</b> ~6–8h · introduz <code>better-sqlite3</code> · primeira feature stateful</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>4 · Reply queue persistente</h3>
+        <span class="status planned">Próximo</span>
+      </div>
+      <p>
+        Quando o digest diz <code>needs_reply: true</code>, o item entra numa <strong>fila de respostas pendentes</strong>. Sai automaticamente quando o Mail Digest detecta um email teu na thread. Resolve o problema do "lembrei-me que tinha de responder àquele email há 3 dias".
+      </p>
+      <div class="meta"><b>Estimativa ·</b> ~3–4h · partilha SQLite com follow-ups</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — DEPOIS DESTAS 4
+       ============================================================ -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="num">03 · depois</div>
+        <h2>Features que fazem o produto diferenciar</h2>
+      </div>
+      <div class="count">5 features · investigação necessária</div>
+    </div>
+
+    <p class="section-intro">
+      Estas são as features que <strong>justificam a existência do produto</strong> face a Superhuman, Shortwave, ou um simples "Gmail + Claude API". Cada uma precisa de algum design antes de ter um prompt executável.
+    </p>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Voice fingerprint — rascunhos que parecem teus</h3>
+        <span class="status planned">Roadmap</span>
+      </div>
+      <p>
+        Lê os últimos 200 emails enviados, extrai padrões da tua voz (saudação típica, despedida, tamanho médio de frase, formalidade, uso de markdown, idioma por interlocutor), e usa esse <em>fingerprint</em> em todos os rascunhos sugeridos. Diferenciador real face a draft replies "robóticas" que cheiram a AI à distância.
+      </p>
+      <div class="meta"><b>Inspiração ·</b> Lex.page voice match · Superhuman split-test · OpenAI fine-tune local</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Push 1-click para Calendar · Reminders · Todoist · Things</h3>
+        <span class="status planned">Roadmap</span>
+      </div>
+      <p>
+        O digest já extrai eventos e tarefas. Falta um botão que os <strong>cria efectivamente</strong> nas apps que usas. Integrações iniciais sugeridas: <strong>Google Calendar</strong> (API), <strong>Apple Reminders</strong> (AppleScript em macOS), <strong>Todoist</strong> (REST API), <strong>Things 3</strong> (URL scheme). Transforma o produto de "ferramenta de leitura" em "ferramenta de execução".
+      </p>
+      <div class="meta"><b>Risco ·</b> mais APIs externas a gerir · keychain mais cheia</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Pattern detection multi-dia</h3>
+        <span class="status planned">Roadmap</span>
+      </div>
+      <p>
+        "O João escreveu-te 3 vezes esta semana sobre o projecto X — talvez seja altura de ter uma chamada." "O banco enviou-te alertas de saldo baixo 4x este mês." Padrões só visíveis com histórico. Precisa da camada SQLite (já introduzida na iteração 3) para guardar metadados de emails passados.
+      </p>
+      <div class="meta"><b>Inspiração ·</b> Hey Imbox screener · Superhuman insights</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Audio briefing — ouve o teu digest a caminho do trabalho</h3>
+        <span class="status maybe">Talvez</span>
+      </div>
+      <p>
+        Transforma o briefing em ficheiro áudio (TTS local com Piper, ou ElevenLabs / OpenAI TTS opcionalmente). 3–5 minutos. Tocas no comboio, no carro, durante o pequeno-almoço. Posiciona o produto longe de qualquer cliente de email.
+      </p>
+      <div class="meta"><b>Stack ·</b> Piper TTS local · OpenAI tts-1 · ElevenLabs</div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Cost transparency dashboard</h3>
+        <span class="status planned">Roadmap</span>
+      </div>
+      <p>
+        Para utilizadores com API keys configuradas: estimativa em tempo real do custo do digest deste mês, partido por <strong>tokens de input</strong>, <strong>tokens de output</strong>, e <strong>provider</strong>. Combate a opacidade que afasta utilizadores de produtos AI.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — TALVEZ MAIS LONGE
+       ============================================================ -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="num">04 · talvez</div>
+        <h2>Hipóteses mais distantes</h2>
+      </div>
+      <div class="count">5 ideias · valida antes</div>
+    </div>
+
+    <p class="section-intro">
+      Ideias que <strong>parecem boas mas precisam de utilizadores reais primeiro</strong>. Listo aqui para não as perder, mas só ganham prioridade se o feedback do roadmap acima as pedir.
+    </p>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Outlook + IMAP — multi-provider de email</h3>
+        <span class="status maybe">Talvez</span>
+      </div>
+      <p>
+        A arquitectura já está preparada (provider abstraction). Falta implementar o module Outlook (Microsoft Graph API) e o module IMAP genérico para Fastmail, ProtonMail, etc. Decisão depende de quantos utilizadores reais pedem.
+      </p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Multi-account no mesmo digest</h3>
+        <span class="status maybe">Talvez</span>
+      </div>
+      <p>
+        Conectar pessoal + trabalho na mesma app, com um único digest unificado ou views separadas. Útil para freelancers e founders. Complica o modelo OAuth e a UX de definições.
+      </p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Mobile companion (read-only)</h3>
+        <span class="status maybe">Talvez</span>
+      </div>
+      <p>
+        App nativa iOS / Android que <strong>lê</strong> o digest gerado no desktop. Sync via iCloud Drive, Dropbox, ou um endpoint encriptado. <em>Não</em> faz inference — só apresentação.
+      </p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Modo conversação livre com o assistente</h3>
+        <span class="status maybe">Talvez</span>
+      </div>
+      <p>
+        "Mostra-me todos os emails do banco nos últimos 30 dias." "Quais são as 3 threads mais importantes que ignorei?" Requer indexação local pesquisável (SQLite FTS5) e um agente que sabe usar essa indexação.
+      </p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-head">
+        <h3>Encriptação at-rest das API keys</h3>
+        <span class="status planned">Tarefa técnica</span>
+      </div>
+      <p>
+        Hoje as API keys são guardadas no <code>electron-store</code> sem encriptação adicional (assumimos que o user account está protegido). Mover para AES-256 com chave derivada do password do OS keychain. Pré-requisito para distribuir builds que façam shadowing de keys.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5 — NÃO VAMOS FAZER
+       ============================================================ -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="num">05 · explícito</div>
+        <h2>O que não vamos fazer</h2>
+      </div>
+      <div class="count">non-goals</div>
+    </div>
+
+    <p class="section-intro">
+      A clareza sobre o que <em>não</em> é o Mail Digest é tão importante como o roadmap. Estas são decisões deliberadas — não esquecimentos.
+    </p>
+
+    <div class="wont">
+      <div class="wont-row">
+        <span class="x">×</span>
+        <div>
+          <div class="label">Não vamos ser um cliente de email completo.</div>
+          <div class="why">Não fazemos compose-de-zero, gestão de labels, search avançado, ou rules. O Gmail e clientes nativos já fazem isso. Continuamos a ser uma camada por cima.</div>
+        </div>
+      </div>
+      <div class="wont-row">
+        <span class="x">×</span>
+        <div>
+          <div class="label">Não corremos servidor próprio que vê os teus emails.</div>
+          <div class="why">A escolha do provider é tua. O email vai do Gmail para o teu desktop e depois directamente para Claude, GPT, ou Gemini com a tua API key — nunca por um servidor Mail Digest.</div>
+        </div>
+      </div>
+      <div class="wont-row">
+        <span class="x">×</span>
+        <div>
+          <div class="label">Não fazemos analytics nem telemetria.</div>
+          <div class="why">Não sabemos quem usa, quanto usa, ou que features são populares. Custa-nos dados de produto. Ganhamos confiança dos utilizadores. É um trade-off explícito.</div>
+        </div>
+      </div>
+      <div class="wont-row">
+        <span class="x">×</span>
+        <div>
+          <div class="label">Não vamos fazer um modelo de subscrição inicial.</div>
+          <div class="why">Enquanto for MIT + bring-your-own-API-key, o modelo é open-source. Se um dia oferecermos uma versão gerida (com inference partilhada e sync entre máquinas), aí justifica subscrição. Não antes.</div>
+        </div>
+      </div>
+      <div class="wont-row">
+        <span class="x">×</span>
+        <div>
+          <div class="label">Não fazemos auto-reply.</div>
+          <div class="why">Rascunhos sim, envio automático nunca. O custo de uma mensagem mal-enviada em nome do utilizador é alto demais. O humano fica sempre no loop final.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <div class="footer">
+    <b>Última actualização ·</b> 25 Mai 2026 — v0.4 (briefing layout + paleta âmbar)<br>
+    <b>Repositório ·</b> github.com/tigaszzz/mail-digest · MIT licensed<br>
+    <b>Contacto ·</b> hello@maildigest.app · issues via GitHub
+  </div>
+
+</main>
+
+</body>
+</html>
